@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { 
-  Menu, X, Crown, Instagram, Sparkles, Calendar, Headphones, Scroll, BookOpen 
+  Menu, X, Crown, Instagram, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
 } from 'lucide-vue-next';
+import { useLanguage } from './services/languageService';
 
 const router = useRouter();
 const route = useRoute();
+const { currentLang, toggleLanguage } = useLanguage();
 const isMenuOpen = ref(false);
 
-const navLinks = [
-  { name: 'home', label: 'Inicio', icon: Sparkles },
-  { name: 'events', label: 'Eventos', icon: Calendar },
-  { name: 'podcast', label: 'Podcast', icon: Headphones },
-  { name: 'blog', label: 'Blog', icon: BookOpen },
-  { name: 'manifesto', label: 'Manifiesto', icon: Scroll },
-];
+const navLinks = computed(() => [
+  { name: 'home', label: currentLang.value === 'es' ? 'Inicio' : 'Home', icon: Sparkles },
+  { name: 'events', label: currentLang.value === 'es' ? 'Eventos' : 'Events', icon: Calendar },
+  { name: 'podcast', label: currentLang.value === 'es' ? 'Podcast' : 'Podcast', icon: Headphones },
+  { name: 'blog', label: currentLang.value === 'es' ? 'Blog' : 'Blog', icon: BookOpen },
+  { name: 'manifesto', label: currentLang.value === 'es' ? 'Manifiesto' : 'Manifesto', icon: Scroll },
+]);
 
 function navigateTo(name: string) {
   router.push({ name });
@@ -53,6 +55,16 @@ function isActive(name: string) {
             :class="isActive(link.name) ? 'bg-pink-100 text-pink-700' : 'text-slate-600 hover:bg-white/50 hover:text-pink-600'"
           >
             {{ link.label }}
+          </button>
+          
+          <div class="w-px h-6 bg-slate-200 mx-2"></div>
+
+          <!-- Language Switcher -->
+          <button 
+            @click="toggleLanguage"
+            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-all border border-slate-200"
+          >
+            <Languages :size="16" /> {{ currentLang }}
           </button>
           
           <div class="w-px h-6 bg-slate-200 mx-2"></div>

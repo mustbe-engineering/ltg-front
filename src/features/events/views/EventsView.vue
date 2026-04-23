@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Calendar, MapPin, Coffee, Sparkles } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
@@ -8,18 +8,27 @@ import { getContent } from '../../../services/contentService';
 
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
+import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
+import { useLanguage } from '../../../services/languageService';
+
 const router = useRouter();
 const events = ref<any[]>([]);
 const loading = ref(true);
+const { currentLang } = useLanguage();
 
-onMounted(async () => {
+async function loadContent() {
   loading.value = true;
-  const data = await getContent('events');
+  const data = await getContent('events', currentLang.value);
   if (data && data.posts) {
     events.value = data.posts;
+  } else {
+    events.value = [];
   }
   loading.value = false;
-});
+}
+
+onMounted(loadContent);
+watch(currentLang, loadContent);
 
 function openEvent(slug: string) {
   router.push({ name: 'event-detail', params: { slug } });

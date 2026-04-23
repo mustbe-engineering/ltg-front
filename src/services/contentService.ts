@@ -6,12 +6,18 @@ import { MOCKS } from './contentMocks';
  */
 const CMS_URL = import.meta.env.VITE_CMS_API_URL || '';
 
-export async function getContent(slug: string): Promise<any> {
+/**
+ * Fetches content from the CMS API.
+ * @param slug - The content identifier (e.g., 'blog', 'events', 'manifesto')
+ * @param lang - The language code ('es' or 'en')
+ */
+export async function getContent(slug: string, lang: string = 'es'): Promise<any> {
   const isDev = import.meta.env.DEV;
   
   // 1. Clean up the slug and build the index.json path
   const cleanSlug = slug.replace(/\/$/, '').replace(/^\//, '');
-  const apiPath = cleanSlug === '' || cleanSlug === 'home' ? '/index.json' : `/${cleanSlug}/index.json`;
+  const langPath = lang === 'es' ? '' : `/${lang}`;
+  const apiPath = cleanSlug === '' || cleanSlug === 'home' ? `${langPath}/index.json` : `${langPath}/${cleanSlug}/index.json`;
   const url = `${CMS_URL}${apiPath}`.replace(/\/+/g, '/').replace(':/', '://');
 
   // 2. Attempt production fetch

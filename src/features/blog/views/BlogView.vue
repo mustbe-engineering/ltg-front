@@ -6,18 +6,28 @@ import { getContent } from '../../../services/contentService';
 import { useRouter } from 'vue-router';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
+import { useLanguage } from '../../../services/languageService';
+
 const router = useRouter();
 const posts = ref<any[]>([]);
 const loading = ref(true);
+const { currentLang } = useLanguage();
 
-onMounted(async () => {
+async function loadContent() {
   loading.value = true;
-  const blogData = await getContent('blog');
+  const blogData = await getContent('blog', currentLang.value);
   if (blogData && blogData.posts) {
     posts.value = blogData.posts;
+  } else {
+    posts.value = [];
   }
   loading.value = false;
-});
+}
+
+onMounted(loadContent);
+
+// Watch for language changes to refetch data
+watch(currentLang, loadContent);
 
 function readPost(slug: string) {
   router.push({ name: 'blog-post', params: { slug } });
