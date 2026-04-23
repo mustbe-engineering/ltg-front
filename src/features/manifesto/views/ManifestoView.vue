@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { Scroll, Crown, Sparkles } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
+import { getContent } from '../../../services/contentService';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
 const manifesto = ref<any>(null);
@@ -36,7 +37,7 @@ onMounted(async () => {
         </h3>
         <div v-if="manifesto?.principles?.length" class="space-y-12">
           <div v-for="(principle, index) in manifesto.principles" :key="index" class="flex gap-6">
-            <div class="text-5xl font-serif text-pink-300 font-bold opacity-50">{{ principle?.number || (index + 1) }}.</div>
+            <div class="text-5xl font-serif text-pink-300 font-bold opacity-50">{{ principle?.number ? principle.number : (Number(index) + 1) }}.</div>
             <div>
               <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle?.title || 'Principio' }}</h4>
               <p class="text-slate-700 leading-relaxed text-lg">
