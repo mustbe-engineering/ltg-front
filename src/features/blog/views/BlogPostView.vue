@@ -3,6 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Calendar, User, ArrowLeft, Clock } from 'lucide-vue-next';
 import { getContent } from '../../../services/contentService';
+import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -65,8 +66,9 @@ watch(() => route.params.slug, loadPost);
     </div>
 
     <!-- Loading State -->
-    <div v-else-if="loading" class="flex justify-center items-center h-64">
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-pink-200 border-t-pink-500"></div>
+    <div v-else-if="loading" class="container mx-auto px-6 max-w-4xl">
+      <SkeletonLoader height="h-20" class="mb-8" />
+      <SkeletonLoader height="h-96" />
     </div>
     
     <!-- Not Found -->

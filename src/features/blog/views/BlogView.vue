@@ -4,15 +4,19 @@ import { BookOpen, Calendar, ChevronRight } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 import { useRouter } from 'vue-router';
+import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
 const router = useRouter();
 const posts = ref<any[]>([]);
+const loading = ref(true);
 
 onMounted(async () => {
+  loading.value = true;
   const blogData = await getContent('blog');
   if (blogData && blogData.posts) {
     posts.value = blogData.posts;
   }
+  loading.value = false;
 });
 
 function readPost(slug: string) {
@@ -24,7 +28,11 @@ function readPost(slug: string) {
   <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen bg-pink-50/30">
     <SectionTitle :icon="BookOpen">Crónicas del Reino</SectionTitle>
     
-    <div v-if="posts.length > 0" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div v-if="loading" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <SkeletonLoader v-for="i in 6" :key="i" height="h-64" />
+    </div>
+
+    <div v-else-if="posts.length > 0" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       <article 
         v-for="post in posts" 
         :key="post?.id || Math.random()"

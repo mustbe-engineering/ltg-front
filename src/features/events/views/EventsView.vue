@@ -6,14 +6,19 @@ import SectionTitle from '../../shared/components/SectionTitle.vue';
 import Button from '../../shared/components/Button.vue';
 import { getContent } from '../../../services/contentService';
 
+import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
+
 const router = useRouter();
 const events = ref<any[]>([]);
+const loading = ref(true);
 
 onMounted(async () => {
+  loading.value = true;
   const data = await getContent('events');
   if (data && data.posts) {
     events.value = data.posts;
   }
+  loading.value = false;
 });
 
 function openEvent(slug: string) {
@@ -24,7 +29,12 @@ function openEvent(slug: string) {
 <template>
   <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen bg-pink-50/50">
     <SectionTitle :icon="Calendar">Calendario Real</SectionTitle>
-    <div v-if="events.length > 0" class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    
+    <div v-if="loading" class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <SkeletonLoader v-for="i in 4" :key="i" height="h-64" />
+    </div>
+
+    <div v-else-if="events.length > 0" class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
       <div 
         v-for="event in events" 
         :key="event?.id || Math.random()" 

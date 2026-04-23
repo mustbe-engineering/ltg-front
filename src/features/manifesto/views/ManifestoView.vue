@@ -2,19 +2,27 @@
 import { ref, onMounted } from 'vue';
 import { Scroll, Crown, Sparkles } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
-import { getContent } from '../../../services/contentService';
+import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
 const manifesto = ref<any>(null);
+const loading = ref(true);
 
 onMounted(async () => {
+  loading.value = true;
   manifesto.value = await getContent('manifesto');
+  loading.value = false;
 });
 </script>
 
 <template>
   <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen relative overflow-hidden">
     <div class="absolute inset-0 z-0 opacity-30 pointer-events-none" style="background-image: radial-gradient(#f0abfc 1px, transparent 1px); background-size: 30px 30px;"></div>
-    <div class="max-w-4xl mx-auto relative z-10" v-if="manifesto">
+    
+    <div v-if="loading" class="max-w-4xl mx-auto relative z-10">
+      <SkeletonLoader height="h-[600px]" />
+    </div>
+
+    <div class="max-w-4xl mx-auto relative z-10" v-else-if="manifesto">
       <SectionTitle :icon="Scroll">{{ manifesto?.title || 'El Manifiesto' }}</SectionTitle>
       <div class="bg-[#fffbf0] p-8 md:p-12 rounded shadow-2xl border-t-8 border-b-8 border-pink-300 relative">
         <div class="absolute top-4 left-4 text-pink-200">

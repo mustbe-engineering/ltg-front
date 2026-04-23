@@ -4,13 +4,18 @@ import { Mic, Rss, Play, Headphones } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 
+import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
+
 const episodes = ref<any[]>([]);
+const loading = ref(true);
 
 onMounted(async () => {
+  loading.value = true;
   const data = await getContent('podcast');
   if (data && data.posts) {
     episodes.value = data.posts;
   }
+  loading.value = false;
 });
 </script>
 
@@ -31,7 +36,11 @@ onMounted(async () => {
       </div>
     </div>
     
-    <div v-if="episodes.length > 0" class="max-w-4xl mx-auto space-y-6">
+    <div v-if="loading" class="max-w-4xl mx-auto space-y-6">
+       <SkeletonLoader v-for="i in 3" :key="i" height="h-32" />
+    </div>
+
+    <div v-else-if="episodes.length > 0" class="max-w-4xl mx-auto space-y-6">
       <div 
         v-for="episode in episodes" 
         :key="episode?.id || Math.random()" 
