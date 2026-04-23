@@ -24,32 +24,33 @@ function readPost(slug: string) {
   <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen bg-pink-50/30">
     <SectionTitle :icon="BookOpen">Crónicas del Reino</SectionTitle>
     
-    <div class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div v-if="posts.length > 0" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       <article 
         v-for="post in posts" 
-        :key="post.id"
+        :key="post?.id || Math.random()"
         class="group bg-white rounded-3xl p-6 border border-purple-100 shadow-lg shadow-purple-50 hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col"
       >
         <div class="mb-4">
           <span class="inline-block px-3 py-1 rounded-full bg-pink-100 text-pink-700 text-xs font-bold uppercase tracking-wide">
-            {{ post.category || 'Artículo' }}
+            {{ post?.category || 'Artículo' }}
           </span>
         </div>
         
         <h3 class="text-xl font-serif font-bold text-slate-800 mb-3 group-hover:text-purple-600 transition-colors leading-tight">
-          {{ post.title }}
+          {{ post?.title || 'Sin Título' }}
         </h3>
         
         <p class="text-slate-600 text-sm mb-6 flex-1 leading-relaxed line-clamp-3">
-          {{ post.excerpt }}
+          {{ post?.excerpt || '' }}
         </p>
         
         <div class="flex items-center justify-between pt-4 border-t border-slate-50">
-          <div class="flex items-center gap-2 text-xs text-slate-400">
+          <div v-if="post?.date" class="flex items-center gap-2 text-xs text-slate-400">
             <Calendar :size="14" />
             {{ post.date }}
           </div>
           <button 
+            v-if="post?.slug"
             @click="readPost(post.slug)"
             class="text-pink-600 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all"
           >
@@ -57,6 +58,9 @@ function readPost(slug: string) {
           </button>
         </div>
       </article>
+    </div>
+    <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-pink-200">
+      <p class="text-slate-400 font-serif italic">No se encontraron artículos en la biblioteca real.</p>
     </div>
   </div>
 </template>

@@ -15,7 +15,7 @@ onMounted(async () => {
   <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen relative overflow-hidden">
     <div class="absolute inset-0 z-0 opacity-30 pointer-events-none" style="background-image: radial-gradient(#f0abfc 1px, transparent 1px); background-size: 30px 30px;"></div>
     <div class="max-w-4xl mx-auto relative z-10" v-if="manifesto">
-      <SectionTitle :icon="Scroll">{{ manifesto.title || 'El Manifiesto' }}</SectionTitle>
+      <SectionTitle :icon="Scroll">{{ manifesto?.title || 'El Manifiesto' }}</SectionTitle>
       <div class="bg-[#fffbf0] p-8 md:p-12 rounded shadow-2xl border-t-8 border-b-8 border-pink-300 relative">
         <div class="absolute top-4 left-4 text-pink-200">
           <Crown :size="40" />
@@ -23,21 +23,21 @@ onMounted(async () => {
         <div class="absolute bottom-4 right-4 text-pink-200">
           <Sparkles :size="40" />
         </div>
-        <h3 class="text-3xl font-serif text-center text-slate-800 italic mb-10">
+        <h3 v-if="manifesto?.quote" class="text-3xl font-serif text-center text-slate-800 italic mb-10">
           {{ manifesto.quote }}
         </h3>
-        <div class="space-y-12">
+        <div v-if="manifesto?.principles?.length" class="space-y-12">
           <div v-for="(principle, index) in manifesto.principles" :key="index" class="flex gap-6">
-            <div class="text-5xl font-serif text-pink-300 font-bold opacity-50">{{ principle.number }}.</div>
+            <div class="text-5xl font-serif text-pink-300 font-bold opacity-50">{{ principle?.number || (index + 1) }}.</div>
             <div>
-              <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle.title }}</h4>
+              <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle?.title || 'Principio' }}</h4>
               <p class="text-slate-700 leading-relaxed text-lg">
-                {{ principle.body }}
+                {{ principle?.body || '' }}
               </p>
             </div>
           </div>
         </div>
-        <div class="mt-12 pt-8 border-t border-pink-200 text-center">
+        <div v-if="manifesto?.footer_text" class="mt-12 pt-8 border-t border-pink-200 text-center">
           <p class="font-serif italic text-slate-500">{{ manifesto.footer_text }}</p>
         </div>
       </div>

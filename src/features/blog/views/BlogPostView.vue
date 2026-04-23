@@ -12,8 +12,8 @@ const loading = ref(true);
 async function loadPost() {
   loading.value = true;
   const slug = route.params.slug as string;
-  // En producción esto buscaría el JSON específico del post
-  post.value = await getContent(`posts/${slug}`);
+  // Standardized to fetch from blog/slug
+  post.value = await getContent(`blog/${slug}`);
   loading.value = false;
 }
 
@@ -35,19 +35,19 @@ watch(() => route.params.slug, loadPost);
       <!-- Header -->
       <header class="text-center mb-12">
         <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-pink-100 text-pink-700 text-xs font-bold uppercase tracking-wider mb-6">
-          {{ post.category || 'Artículo' }}
+          {{ post?.category || 'Artículo' }}
         </div>
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-slate-800 mb-6 leading-tight">
-          {{ post.title }}
+          {{ post?.title || 'Sin Título' }}
         </h1>
         <div class="flex items-center justify-center gap-6 text-slate-500 text-sm">
-          <div class="flex items-center gap-2">
+          <div v-if="post?.date" class="flex items-center gap-2">
             <Calendar :size="16" /> {{ post.date }}
           </div>
           <div class="flex items-center gap-2">
-            <User :size="16" /> {{ post.author || 'La Corte' }}
+            <User :size="16" /> {{ post?.author || 'La Corte' }}
           </div>
-          <div class="flex items-center gap-2" v-if="post.readTime">
+          <div class="flex items-center gap-2" v-if="post?.readTime">
             <Clock :size="16" /> {{ post.readTime }}
           </div>
         </div>

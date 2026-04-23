@@ -31,10 +31,10 @@ onMounted(async () => {
       </div>
     </div>
     
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div v-if="episodes.length > 0" class="max-w-4xl mx-auto space-y-6">
       <div 
         v-for="episode in episodes" 
-        :key="episode.id" 
+        :key="episode?.id || Math.random()" 
         class="bg-white rounded-3xl p-6 border border-purple-100 shadow-lg shadow-purple-50 hover:shadow-xl transition-all flex flex-col md:flex-row gap-6 items-center group"
       >
         <div class="w-24 h-24 bg-gradient-to-br from-pink-400 to-purple-600 rounded-2xl flex items-center justify-center shrink-0 shadow-inner">
@@ -42,16 +42,20 @@ onMounted(async () => {
         </div>
         <div class="flex-1 text-center md:text-left">
           <div class="flex flex-col md:flex-row md:items-center gap-2 mb-2 justify-center md:justify-start">
-            <span class="text-xs font-bold text-pink-500 bg-pink-50 px-2 py-1 rounded-md uppercase tracking-wide">Nuevo Episodio</span>
-            <span class="text-xs text-slate-400">{{ episode.date }} • {{ episode.duration }}</span>
+            <span class="text-xs font-bold text-pink-500 bg-pink-50 px-2 py-1 rounded-md uppercase tracking-wide">Episodio</span>
+            <span class="text-xs text-slate-400">
+              <span v-if="episode?.date">{{ episode.date }}</span>
+              <span v-if="episode?.date && episode?.duration"> • </span>
+              <span v-if="episode?.duration">{{ episode.duration }}</span>
+            </span>
           </div>
           <h3 class="text-xl font-bold font-serif text-slate-800 mb-2 group-hover:text-purple-600 transition-colors">
-            {{ episode.title }}
+            {{ episode?.title || 'Episodio Sin Título' }}
           </h3>
           <p class="text-slate-600 text-sm mb-3">
-            {{ episode.description }}
+            {{ episode?.description || '' }}
           </p>
-          <div class="text-xs font-semibold text-purple-400">
+          <div v-if="episode?.guest" class="text-xs font-semibold text-purple-400">
             Invitada especial: {{ episode.guest }}
           </div>
         </div>
@@ -59,6 +63,9 @@ onMounted(async () => {
           <Play :size="20" class="ml-1" />
         </button>
       </div>
+    </div>
+    <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-pink-200 max-w-4xl mx-auto w-full">
+      <p class="text-slate-400 font-serif italic">Las bardas están en silencio por ahora...</p>
     </div>
   </div>
 </template>
