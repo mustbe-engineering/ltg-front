@@ -1,0 +1,11 @@
+*.html
+.DS_Store
+node_modules
+package-lock.json
+.idea
+*.iml
+dist/
+coverage/
+.env
+.env.development
+.env.local
