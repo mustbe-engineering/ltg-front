@@ -5,9 +5,6 @@ import { Calendar, MapPin, Coffee, Sparkles } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import Button from '../../shared/components/Button.vue';
 import { getContent } from '../../../services/contentService';
-
-import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
-
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 import { useLanguage } from '../../../services/languageService';
 
@@ -36,7 +33,7 @@ function openEvent(slug: string) {
 </script>
 
 <template>
-  <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen bg-pink-50/50">
+  <div id="events" class="py-20 container mx-auto px-6 bg-pink-50/50 rounded-[3rem] my-12">
     <SectionTitle :icon="Calendar">Calendario Real</SectionTitle>
     
     <div v-if="loading" class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">

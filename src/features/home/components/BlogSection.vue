@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { BookOpen, Calendar, ChevronRight } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 import { useRouter } from 'vue-router';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
-
 import { useLanguage } from '../../../services/languageService';
 
 const router = useRouter();
@@ -25,8 +24,6 @@ async function loadContent() {
 }
 
 onMounted(loadContent);
-
-// Watch for language changes to refetch data
 watch(currentLang, loadContent);
 
 function readPost(slug: string) {
@@ -35,7 +32,7 @@ function readPost(slug: string) {
 </script>
 
 <template>
-  <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen bg-pink-50/30">
+  <div id="blog" class="py-20 container mx-auto px-6 bg-pink-50/30 rounded-[3rem] my-12">
     <SectionTitle :icon="BookOpen">Crónicas del Reino</SectionTitle>
     
     <div v-if="loading" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">

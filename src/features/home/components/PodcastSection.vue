@@ -8,7 +8,6 @@ import { useLanguage } from '../../../services/languageService';
 
 const episodes = ref<any[]>([]);
 const loading = ref(true);
-const { t } = useLanguage();
 const { currentLang } = useLanguage();
 
 async function loadContent() {
@@ -27,7 +26,7 @@ watch(currentLang, loadContent);
 </script>
 
 <template>
-  <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen">
+  <div id="podcast" class="py-20 container mx-auto px-6">
     <SectionTitle :icon="Mic">La Voz del Reino</SectionTitle>
     <div class="text-center mb-12">
       <p class="text-slate-600 max-w-2xl mx-auto mb-6">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { 
   Menu, X, Crown, Instagram, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
@@ -10,6 +10,7 @@ const router = useRouter();
 const route = useRoute();
 const { currentLang, toggleLanguage } = useLanguage();
 const isMenuOpen = ref(false);
+const activeSection = ref('home');
 
 const navLinks = computed(() => [
   { name: 'home', label: currentLang.value === 'es' ? 'Inicio' : 'Home', icon: Sparkles },
@@ -19,13 +20,47 @@ const navLinks = computed(() => [
   { name: 'manifesto', label: currentLang.value === 'es' ? 'Manifiesto' : 'Manifesto', icon: Scroll },
 ]);
 
+// ScrollSpy Logic
+onMounted(() => {
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -70% 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        activeSection.value = entry.target.id;
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections
+  navLinks.value.forEach((link) => {
+    const el = document.getElementById(link.name);
+    if (el) observer.observe(el);
+  });
+});
+
 function navigateTo(name: string) {
-  router.push({ name });
   isMenuOpen.value = false;
+  
+  if (route.name === 'home') {
+    const element = document.getElementById(name);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      activeSection.value = name;
+      return;
+    }
+  }
+  
+  router.push({ name: 'home', hash: `#${name}` });
 }
 
 function isActive(name: string) {
-  return route.name === name;
+  if (route.name !== 'home') return false;
+  return activeSection.value === name;
 }
 </script>
 

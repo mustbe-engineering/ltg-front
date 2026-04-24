@@ -1,22 +1,27 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { Scroll, Crown, Sparkles } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
+import { useLanguage } from '../../../services/languageService';
 
 const manifesto = ref<any>(null);
 const loading = ref(true);
+const { currentLang } = useLanguage();
 
-onMounted(async () => {
+async function loadContent() {
   loading.value = true;
-  manifesto.value = await getContent('manifesto');
+  manifesto.value = await getContent('manifesto', currentLang.value);
   loading.value = false;
-});
+}
+
+onMounted(loadContent);
+watch(currentLang, loadContent);
 </script>
 
 <template>
-  <div class="pt-32 pb-20 container mx-auto px-6 min-h-screen relative overflow-hidden">
+  <div id="manifesto" class="py-20 container mx-auto px-6 relative overflow-hidden">
     <div class="absolute inset-0 z-0 opacity-30 pointer-events-none" style="background-image: radial-gradient(#f0abfc 1px, transparent 1px); background-size: 30px 30px;"></div>
     
     <div v-if="loading" class="max-w-4xl mx-auto relative z-10">

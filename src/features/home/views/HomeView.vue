@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import { Sparkles, Calendar, Headphones, Coffee } from 'lucide-vue-next';
-import { useRouter } from 'vue-router';
 import Button from '../../shared/components/Button.vue';
 import NewsletterSection from '../../shared/components/NewsletterSection.vue';
+import EventsSection from '../components/EventsSection.vue';
+import PodcastSection from '../components/PodcastSection.vue';
+import BlogSection from '../components/BlogSection.vue';
+import ManifestoSection from '../components/ManifestoSection.vue';
 
-const router = useRouter();
-
-function goTo(name: string) {
-  router.push({ name });
+function scrollToSection(id: string) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 </script>
 
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="relative pt-32 pb-24 overflow-hidden bg-[#faf5ff]">
+    <section id="home" class="relative pt-32 pb-24 overflow-hidden bg-[#faf5ff]">
       <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-pink-300/20 rounded-full blur-3xl"></div>
         <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300/20 rounded-full blur-3xl"></div>
@@ -32,10 +36,10 @@ function goTo(name: string) {
           Un espacio seguro, inclusivo y encantado para mujeres que aman Magic: The Gathering. Aquí, cada jugadora es una reina y cada mazo cuenta una historia.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button primary @click="goTo('events')">
+          <Button primary @click="scrollToSection('events')">
             <Calendar :size="18" /> Ver Eventos
           </Button>
-          <Button @click="goTo('podcast')">
+          <Button @click="scrollToSection('podcast')">
             <Headphones :size="18" /> Escuchar Podcast
           </Button>
         </div>
@@ -60,7 +64,7 @@ function goTo(name: string) {
               <p class="text-lg text-slate-700 mb-6 leading-relaxed">
                 Olvída la tensión de los torneos oscuros. Te invitamos a nuestra mesa: un lugar lleno de luz, té, postres y risas. El <strong>Commander Tea Party</strong> es nuestra celebración de la amistad y la estrategia, donde ganar es secundario y pasarlo bien es la ley del reino.
               </p>
-              <Button primary @click="goTo('events')">Reservar mi lugar en la mesa</Button>
+              <Button primary @click="scrollToSection('events')">Reservar mi lugar en la mesa</Button>
             </div>
             <div class="hidden md:flex justify-center">
               <div class="w-80 h-96 bg-white rounded-t-full rounded-b-3xl shadow-[0_20px_50px_rgba(236,72,153,0.3)] border-8 border-white flex flex-col items-center justify-center p-6 text-center">
@@ -75,6 +79,12 @@ function goTo(name: string) {
       </div>
     </section>
 
+    <EventsSection />
+    <PodcastSection />
+    <BlogSection />
+    <ManifestoSection />
+    
     <NewsletterSection />
   </div>
 </template>
+
