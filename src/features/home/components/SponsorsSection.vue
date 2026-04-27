@@ -41,7 +41,7 @@ function openUrl(url: string) {
     </div>
 
     <div v-if="loading" class="flex justify-center gap-8 py-10 overflow-hidden">
-      <div v-for="i in 3" :key="i" class="w-32 h-20 bg-slate-100 animate-pulse rounded-xl"></div>
+      <div v-for="i in 3" :key="i" class="w-32 h-20 bg-brand-surface animate-pulse rounded-xl"></div>
     </div>
 
     <div v-else-if="sponsors.length > 0" class="relative group">
@@ -63,14 +63,14 @@ function openUrl(url: string) {
               :alt="sponsor?.alt || sponsor?.title" 
               class="max-w-full max-h-full object-contain filter grayscale opacity-60 group-hover/logo:grayscale-0 group-hover/logo:opacity-100 transition-all duration-500 drop-shadow-sm"
             />
-            <span v-else class="text-slate-300 font-bold text-lg uppercase tracking-tighter">{{ sponsor?.title }}</span>
+            <span v-else class="text-brand-secondary font-bold text-lg uppercase tracking-tighter">{{ sponsor?.title }}</span>
           </div>
         </div>
       </div>
     </div>
     
     <div v-else class="text-center py-10">
-      <p class="text-slate-300 text-sm italic">Buscando nuevas alianzas...</p>
+      <p class="text-brand-secondary text-sm italic">Buscando nuevas alianzas...</p>
     </div>
   </div>
 </template>

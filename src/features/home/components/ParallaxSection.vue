@@ -8,7 +8,7 @@
     style="background-image: url('/assets/parallax-bg.png'); background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: cover;"
   >
     <!-- Overlay for better text readability if needed -->
-    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-[2px]"></div>
+    <div class="absolute inset-0 bg-brand-dark/40 backdrop-blur-[2px]"></div>
     
     <div class="relative z-10 text-center px-6">
       <h2 class="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-lg">

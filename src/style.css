@@ -3,6 +3,11 @@
 @theme {
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Merriweather', serif;
+
+  --color-brand-dark: #11190e;
+  --color-brand-primary: #be9ffc;
+  --color-brand-secondary: #d6d5ff;
+  --color-brand-surface: #f0ebfc;
 }
 
 /* Animaciones personalizadas si hacen falta, pero Tailwind tiene animate-pulse, etc. */

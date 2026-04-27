@@ -65,19 +65,15 @@ function isActive(name: string) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-pink-200 selection:text-pink-900">
+  <div class="min-h-screen bg-brand-surface font-sans text-brand-dark selection:bg-brand-secondary selection:text-brand-dark">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 left-0 px-4 py-4">
-      <div class="bg-white/80 backdrop-blur-lg rounded-full border border-white/40 shadow-lg shadow-purple-100/50 container mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="bg-white/90 backdrop-blur-lg rounded-full border border-white/40 shadow-lg shadow-brand-secondary/50 container mx-auto px-6 h-16 flex items-center justify-between">
         
         <!-- Logo -->
-        <div class="flex items-center gap-2 cursor-pointer" @click="navigateTo('home')">
-          <div class="w-8 h-8 bg-gradient-to-tr from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white shadow-md">
-            <Crown :size="16" />
-          </div>
-          <span class="font-serif font-bold text-lg tracking-tight text-slate-800 hidden sm:block">
-            Ladies The Gathering
-          </span>
+        <div class="flex items-center cursor-pointer" @click="navigateTo('home')">
+          <img src="@/assets/logos/ltg-logo.svg" alt="Ladies The Gathering" class="h-11 hidden lg:block" />
+          <img src="@/assets/logos/ltg-dot.svg" alt="LTG" class="h-11 lg:hidden" />
         </div>
 
         <!-- Desktop Menu -->
@@ -87,30 +83,30 @@ function isActive(name: string) {
             :key="link.name"
             @click="navigateTo(link.name)"
             class="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all"
-            :class="isActive(link.name) ? 'bg-pink-100 text-pink-700' : 'text-slate-600 hover:bg-white/50 hover:text-pink-600'"
+            :class="isActive(link.name) ? 'bg-brand-primary/20 text-brand-dark border-brand-primary' : 'text-slate-600 hover:bg-white/50 hover:text-brand-primary'"
           >
             {{ link.label }}
           </button>
           
-          <div class="w-px h-6 bg-slate-200 mx-2"></div>
+          <div class="w-px h-6 bg-brand-secondary/30 mx-2"></div>
 
           <!-- Language Switcher -->
           <button 
             @click="toggleLanguage"
-            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-all border border-slate-200"
+            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest text-brand-dark/60 hover:bg-brand-surface transition-all border border-brand-secondary/30"
           >
             <Languages :size="16" /> {{ currentLang }}
           </button>
           
-          <div class="w-px h-6 bg-slate-200 mx-2"></div>
+          <div class="w-px h-6 bg-brand-secondary/30 mx-2"></div>
           
-          <a href="https://instagram.com/ladiesthegathering" target="_blank" class="flex items-center gap-2 px-5 py-2 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-300">
+          <a href="https://instagram.com/ladiesthegathering" target="_blank" class="flex items-center gap-2 px-5 py-2 rounded-full bg-brand-dark text-white text-sm font-semibold hover:bg-brand-dark/90 transition-colors shadow-lg shadow-brand-dark/20">
             <Instagram :size="16" /> Instagram
           </a>
         </div>
 
         <!-- Mobile Toggle -->
-        <button class="lg:hidden text-slate-600 p-2" @click="isMenuOpen = !isMenuOpen">
+        <button class="lg:hidden text-brand-dark p-2" @click="isMenuOpen = !isMenuOpen">
           <component :is="isMenuOpen ? X : Menu" :size="24" />
         </button>
       </div>
@@ -121,16 +117,16 @@ function isActive(name: string) {
           v-for="link in navLinks" 
           :key="link.name"
           @click="navigateTo(link.name)"
-          class="flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all text-slate-600 hover:bg-pink-50 hover:text-pink-600"
-          :class="{ 'bg-pink-50 text-pink-700': isActive(link.name) }"
+          class="flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all text-slate-600 hover:bg-brand-surface hover:text-brand-primary"
+          :class="{ 'bg-brand-surface text-brand-dark': isActive(link.name) }"
         >
           <component :is="link.icon" :size="18" />
           {{ link.label }}
         </button>
         
-        <hr class="border-slate-100 my-2" />
+        <hr class="border-brand-secondary/20 my-2" />
         
-        <a href="https://instagram.com/ladiesthegathering" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-center flex items-center justify-center gap-2">
+        <a href="https://instagram.com/ladiesthegathering" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-dark to-brand-primary text-white font-bold text-center flex items-center justify-center gap-2">
           <Instagram :size="18" /> Instagram
         </a>
       </div>
@@ -142,16 +138,15 @@ function isActive(name: string) {
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-purple-100 pt-16 pb-8">
+    <footer class="bg-white border-t border-brand-secondary/30 pt-16 pb-8">
       <div class="container mx-auto px-6 text-center">
-        <div class="flex items-center gap-2 justify-center mb-6">
-          <Crown class="text-pink-500" />
-          <span class="font-serif font-bold text-2xl text-slate-800">LTG</span>
+        <div class="flex justify-center mb-6">
+          <img src="@/assets/logos/ltg-dot-blk.svg" alt="LTG Logo" class="w-52 h-52" />
         </div>
-        <p class="text-slate-500 max-w-sm mx-auto mb-8">
+        <p class="text-brand-dark/70 max-w-sm mx-auto mb-8 font-medium">
           Construyendo un reino donde cada carta jugada es un lazo de amistad fortalecido.
         </p>
-        <div class="border-t border-slate-100 pt-8 text-slate-400 text-sm">
+        <div class="border-t border-brand-secondary/20 pt-8 text-brand-dark/40 text-sm">
           <p>© {{ new Date().getFullYear() }} Ladies The Gathering. Hecho con polvo de hadas y código.</p>
         </div>
       </div>

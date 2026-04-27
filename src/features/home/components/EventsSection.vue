@@ -33,7 +33,7 @@ function openEvent(slug: string) {
 </script>
 
 <template>
-  <div id="events" class="py-20 container mx-auto px-6 bg-pink-50/50 rounded-[3rem] my-12">
+  <div id="events" class="py-20 container mx-auto px-6 bg-brand-secondary/10 rounded-[3rem] my-12">
     <SectionTitle :icon="Calendar">Calendario Real</SectionTitle>
     
     <div v-if="loading" class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -47,29 +47,29 @@ function openEvent(slug: string) {
         class="group relative bg-white rounded-3xl p-8 border transition-all duration-300 hover:shadow-xl"
         :class="[
           event?.highlight 
-            ? 'border-pink-400 shadow-pink-100 col-span-1 lg:col-span-2 flex flex-col md:flex-row gap-8 items-center' 
+            ? 'border-brand-primary shadow-brand-primary/20 col-span-1 lg:col-span-2 flex flex-col md:flex-row gap-8 items-center' 
             : 'border-white shadow-sm'
         ]"
       >
-        <div v-if="event?.highlight" class="absolute top-0 right-0 bg-pink-500 text-white text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-2xl">
+        <div v-if="event?.highlight" class="absolute top-0 right-0 bg-brand-primary text-brand-dark text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-2xl">
           ¡IMPERDIBLE!
         </div>
         
         <div :class="[event?.highlight ? 'md:w-1/3' : 'mb-6', 'flex justify-center']">
           <div 
             class="rounded-2xl flex items-center justify-center"
-            :class="[event?.highlight ? 'bg-pink-100 w-full h-48' : 'bg-purple-50 w-16 h-16']"
+            :class="[event?.highlight ? 'bg-brand-primary/20 w-full h-48' : 'bg-brand-secondary/20 w-16 h-16']"
           >
-            <Coffee v-if="event?.highlight" :size="64" class="text-pink-400" />
-            <Sparkles v-else :size="32" class="text-purple-400" />
+            <Coffee v-if="event?.highlight" :size="64" class="text-brand-primary" />
+            <Sparkles v-else :size="32" class="text-brand-secondary" />
           </div>
         </div>
         
         <div class="flex-1">
-          <div v-if="event?.date" class="flex items-center gap-2 text-pink-500 text-sm font-bold uppercase tracking-wide mb-2">
+          <div v-if="event?.date" class="flex items-center gap-2 text-brand-primary text-sm font-bold uppercase tracking-wide mb-2">
             <Calendar :size="14" /> {{ event.date }}
           </div>
-          <h3 class="text-2xl font-serif font-bold text-slate-800 mb-2 group-hover:text-pink-600 transition-colors">
+          <h3 class="text-2xl font-serif font-bold text-brand-dark mb-2 group-hover:text-brand-primary transition-colors">
             {{ event?.title || 'Evento Especial' }}
           </h3>
           <div v-if="event?.location" class="flex items-center gap-2 text-slate-500 text-sm mb-4">
@@ -87,7 +87,7 @@ function openEvent(slug: string) {
         </div>
       </div>
     </div>
-    <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-pink-200 max-w-5xl mx-auto w-full">
+    <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-brand-primary/30 max-w-5xl mx-auto w-full">
       <p class="text-slate-400 font-serif italic">No hay decretos de eventos por el momento.</p>
     </div>
   </div>

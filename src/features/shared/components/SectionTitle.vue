@@ -9,12 +9,12 @@ defineProps<{
 
 <template>
   <div class="mb-10 text-center relative z-10">
-    <div class="flex justify-center mb-3 text-pink-500">
+    <div class="flex justify-center mb-3 text-brand-primary">
       <component :is="icon || Crown" :size="32" />
     </div>
-    <h2 class="text-4xl md:text-5xl font-serif font-bold text-slate-800 mb-4 drop-shadow-sm">
+    <h2 class="text-4xl md:text-5xl font-serif font-bold text-brand-dark mb-4 drop-shadow-sm">
       <slot />
     </h2>
-    <div class="h-1 w-24 bg-gradient-to-r from-pink-300 via-purple-300 to-pink-300 mx-auto rounded-full"></div>
+    <div class="h-1 w-24 bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary mx-auto rounded-full"></div>
   </div>
 </template>
