@@ -6,6 +6,8 @@ import EventsSection from '../components/EventsSection.vue';
 import PodcastSection from '../components/PodcastSection.vue';
 import BlogSection from '../components/BlogSection.vue';
 import ManifestoSection from '../components/ManifestoSection.vue';
+import SponsorsSection from '../components/SponsorsSection.vue';
+import ParallaxSection from '../components/ParallaxSection.vue';
 
 function scrollToSection(id: string) {
   const element = document.getElementById(id);
@@ -18,7 +20,7 @@ function scrollToSection(id: string) {
 <template>
   <div>
     <!-- Hero Section -->
-    <section id="home" class="relative pt-32 pb-24 overflow-hidden bg-[#faf5ff]">
+    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#faf5ff]">
       <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-pink-300/20 rounded-full blur-3xl"></div>
         <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-300/20 rounded-full blur-3xl"></div>
@@ -79,12 +81,17 @@ function scrollToSection(id: string) {
       </div>
     </section>
 
+    <ParallaxSection />
     <EventsSection />
+    <NewsletterSection />
     <PodcastSection />
+    <div class="h-12 bg-gradient-to-r from-pink-600 via-purple-700 to-pink-600 flex items-center justify-center relative z-10 shadow-inner">
+      <div class="bg-white p-2 rounded-full shadow-2xl transform -translate-y-1">
+        <img src="/assets/wax-seal.png" alt="LTG Seal" class="h-16 w-16 object-contain" />
+      </div>
+    </div>
     <BlogSection />
     <ManifestoSection />
-    
-    <NewsletterSection />
+    <SponsorsSection />
   </div>
 </template>
-
