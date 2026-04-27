@@ -27,7 +27,7 @@ onMounted(async () => {
     <div v-if="event" class="container mx-auto px-6 max-w-4xl">
       
       <!-- Back -->
-      <button @click="router.push({ name: 'events' })" class="flex items-center gap-2 text-slate-500 hover:text-pink-600 mb-8 font-medium">
+      <button @click="router.push({ name: 'home' })" class="flex items-center gap-2 text-slate-500 hover:text-pink-600 mb-8 font-medium">
         <ArrowLeft :size="20" /> Volver al Calendario
       </button>
 
