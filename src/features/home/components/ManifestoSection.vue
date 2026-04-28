@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { Scroll, Crown, Sparkles } from 'lucide-vue-next';
+import { Scroll } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
@@ -32,15 +32,15 @@ watch(currentLang, loadContent);
       <SectionTitle :icon="Scroll">{{ manifesto?.title || 'El Manifiesto' }}</SectionTitle>
       <div class="bg-white p-8 md:p-12 rounded shadow-2xl border-t-8 border-b-8 border-brand-primary relative">
         <div class="absolute top-4 left-4 text-brand-secondary">
-          <Crown :size="40" />
+          <img src="@/assets/logos/flame.svg" alt="Flame" class="w-20 h-20 object-contain -scale-y-100 rotate-180" />
         </div>
         <div class="absolute bottom-4 right-4 text-brand-secondary">
-          <Sparkles :size="40" />
+          <img src="@/assets/logos/flame.svg" alt="Flame" class="w-20 h-20 object-contain" />
         </div>
-        <h3 v-if="manifesto?.quote" class="text-3xl font-serif text-center text-brand-dark italic mb-10">
+        <h3 v-if="manifesto?.quote" class="text-3xl font-serif text-center text-brand-dark italic mb-8">
           {{ manifesto.quote }}
         </h3>
-        <div v-if="manifesto?.principles?.length" class="space-y-12">
+        <div v-if="manifesto?.principles?.length" class="space-y-12 pt-[84px] pb-[24px]">
           <div v-for="(principle, index) in manifesto.principles" :key="index" class="flex gap-6">
             <div class="text-5xl font-serif text-brand-primary font-bold opacity-50">{{ principle?.number ? principle.number : (Number(index) + 1) }}.</div>
             <div>
@@ -50,8 +50,9 @@ watch(currentLang, loadContent);
               </p>
             </div>
           </div>
+          <img src="@/assets/logos/logo-full.svg" alt="Flame" class="w-124 h-124 object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 pointer-events-none" />
         </div>
-        <div v-if="manifesto?.footer_text" class="mt-12 pt-8 border-t border-brand-secondary text-center">
+        <div v-if="manifesto?.footer_text" class="mt-8 pt-8 border-t border-brand-secondary text-center">
           <p class="font-serif italic text-slate-500">{{ manifesto.footer_text }}</p>
         </div>
       </div>

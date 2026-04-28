@@ -5,6 +5,7 @@ import { Calendar, MapPin, Coffee, Sparkles } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import Button from '../../shared/components/Button.vue';
 import { getContent } from '../../../services/contentService';
+import { formatDate } from '../../../utils/formatters';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 import { useLanguage } from '../../../services/languageService';
 
@@ -67,7 +68,7 @@ function openEvent(slug: string) {
         
         <div class="flex-1">
           <div v-if="event?.date" class="flex items-center gap-2 text-brand-primary text-sm font-bold uppercase tracking-wide mb-2">
-            <Calendar :size="14" /> {{ event.date }}
+            <Calendar :size="14" /> {{ formatDate(event.date) }}
           </div>
           <h3 class="text-2xl font-serif font-bold text-brand-dark mb-2 group-hover:text-brand-primary transition-colors">
             {{ event?.title || 'Evento Especial' }}

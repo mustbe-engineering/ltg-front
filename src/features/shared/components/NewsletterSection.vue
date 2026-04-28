@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Mail, Send } from 'lucide-vue-next';
+import { Send } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -7,16 +7,12 @@ import { Mail, Send } from 'lucide-vue-next';
     <!-- Background Decorations -->
     <div class="absolute inset-0 bg-gradient-to-br from-brand-dark to-black z-0"></div>
     <div class="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
-      <Send :size="300" class="text-white" />
     </div>
     
     <div class="container mx-auto px-6 relative z-10">
       <div class="max-w-3xl mx-auto text-center text-white">
-        <div class="inline-flex items-center justify-center p-3 bg-white/10 rounded-full mb-6 text-brand-primary border border-white/20">
-          <Mail :size="24" />
-        </div>
         <h2 class="text-3xl md:text-5xl font-serif font-bold mb-4">
-          Los Edictos Reales
+          Royal Tea
         </h2>
         <p class="text-brand-secondary mb-8 text-lg">
           Suscríbete para recibir noticias de torneos, nuevos episodios del podcast y secretos del reino directamente en tu bandeja de entrada (vía cuervo digital).

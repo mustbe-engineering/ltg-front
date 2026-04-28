@@ -4,6 +4,7 @@ import { Heart } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 import { useLanguage } from '../../../services/languageService';
+import { getImageUrl, formatExternalUrl } from '../../../utils/urlHelper';
 
 const sponsors = ref<any[]>([]);
 const loading = ref(true);
@@ -25,7 +26,8 @@ watch(currentLang, loadContent);
 
 function openUrl(url: string) {
   if (url) {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    const formattedUrl = formatExternalUrl(url);
+    window.open(formattedUrl, '_blank', 'noopener,noreferrer');
   }
 }
 </script>
@@ -59,7 +61,7 @@ function openUrl(url: string) {
           <div class="w-32 md:w-40 h-24 flex items-center justify-center p-2">
             <img 
               v-if="sponsor?.image"
-              :src="sponsor.image" 
+              :src="getImageUrl(sponsor.image)" 
               :alt="sponsor?.alt || sponsor?.title" 
               class="max-w-full max-h-full object-contain filter grayscale opacity-60 group-hover/logo:grayscale-0 group-hover/logo:opacity-100 transition-all duration-500 drop-shadow-sm"
             />

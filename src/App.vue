@@ -1,16 +1,33 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { 
   Menu, X, Crown, Instagram, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
 } from 'lucide-vue-next';
 import { useLanguage } from './services/languageService';
+import SocialMenu from './features/shared/components/SocialMenu.vue';
 
 const router = useRouter();
 const route = useRoute();
 const { currentLang, toggleLanguage } = useLanguage();
 const isMenuOpen = ref(false);
 const activeSection = ref('home');
+
+import LanguageTransition from './features/shared/components/LanguageTransition.vue';
+
+const transitionRef = ref<any>(null);
+
+function triggerLanguageTransition() {
+  transitionRef.value?.play();
+}
+
+function handleLanguageChange() {
+  toggleLanguage();
+}
+
+function handleLanguageTransitionFinish() {
+  isLanguageTransitioning.value = false;
+}
 
 const navLinks = computed(() => [
   { name: 'home', label: currentLang.value === 'es' ? 'Inicio' : 'Home', icon: Sparkles },
@@ -20,8 +37,82 @@ const navLinks = computed(() => [
   { name: 'manifesto', label: currentLang.value === 'es' ? 'Manifiesto' : 'Manifesto', icon: Scroll },
 ]);
 
+const coinRotation = ref(0);
+let angularVelocity = 0;
+let lastMouseX = 0;
+let lastMouseY = 0;
+let isFirstMove = true;
+let animationFrameId = 0;
+
+const FRICTION = 0.985;
+const SPEED_SCALE = 0.05;
+
+function handleCoinMouseMove(event: MouseEvent) {
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const currentX = event.clientX;
+  const currentY = event.clientY;
+  
+  if (isFirstMove) {
+    lastMouseX = currentX;
+    lastMouseY = currentY;
+    isFirstMove = false;
+    return;
+  }
+
+  const dx = currentX - lastMouseX;
+  const dy = currentY - lastMouseY;
+  const speed = Math.sqrt(dx * dx + dy * dy);
+
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const v1x = lastMouseX - centerX;
+  const v1y = lastMouseY - centerY;
+  const v2x = currentX - centerX;
+  const v2y = currentY - centerY;
+
+  const crossProduct = (v1x * v2y) - (v1y * v2x);
+  const direction = crossProduct >= 0 ? 1 : -1;
+
+  angularVelocity += direction * speed * SPEED_SCALE;
+
+  if (angularVelocity > 50) angularVelocity = 50;
+  if (angularVelocity < -50) angularVelocity = -50;
+
+  lastMouseX = currentX;
+  lastMouseY = currentY;
+}
+
+function handleCoinMouseEnter() {
+  isFirstMove = true;
+}
+
+function updatePhysics() {
+  if (Math.abs(angularVelocity) > 0.5) {
+    coinRotation.value += angularVelocity;
+    angularVelocity *= FRICTION;
+  } else {
+    angularVelocity = 0;
+    const targetAngle = Math.round(coinRotation.value / 180) * 180;
+    const diff = targetAngle - coinRotation.value;
+    
+    if (Math.abs(diff) > 0.1) {
+      coinRotation.value += diff * 0.1;
+    } else {
+      coinRotation.value = targetAngle;
+    }
+  }
+  animationFrameId = requestAnimationFrame(updatePhysics);
+}
+
+onUnmounted(() => {
+  cancelAnimationFrame(animationFrameId);
+});
+
 // ScrollSpy Logic
 onMounted(() => {
+  animationFrameId = requestAnimationFrame(updatePhysics);
+  
   const observerOptions = {
     root: null,
     rootMargin: '-20% 0px -70% 0px',
@@ -92,7 +183,7 @@ function isActive(name: string) {
 
           <!-- Language Switcher -->
           <button 
-            @click="toggleLanguage"
+            @click="triggerLanguageTransition"
             class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest text-brand-dark/60 hover:bg-brand-surface transition-all border border-brand-secondary/30"
           >
             <Languages :size="16" /> {{ currentLang }}
@@ -100,9 +191,7 @@ function isActive(name: string) {
           
           <div class="w-px h-6 bg-brand-secondary/30 mx-2"></div>
           
-          <a href="https://instagram.com/ladiesthegathering" target="_blank" class="flex items-center gap-2 px-5 py-2 rounded-full bg-brand-dark text-white text-sm font-semibold hover:bg-brand-dark/90 transition-colors shadow-lg shadow-brand-dark/20">
-            <Instagram :size="16" /> Instagram
-          </a>
+          <SocialMenu />
         </div>
 
         <!-- Mobile Toggle -->
@@ -126,9 +215,7 @@ function isActive(name: string) {
         
         <hr class="border-brand-secondary/20 my-2" />
         
-        <a href="https://instagram.com/ladiesthegathering" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-dark to-brand-primary text-white font-bold text-center flex items-center justify-center gap-2">
-          <Instagram :size="18" /> Instagram
-        </a>
+        <SocialMenu :isMobile="true" />
       </div>
     </nav>
 
@@ -141,7 +228,16 @@ function isActive(name: string) {
     <footer class="bg-white border-t border-brand-secondary/30 pt-16 pb-8">
       <div class="container mx-auto px-6 text-center">
         <div class="flex justify-center mb-6">
-          <img src="@/assets/logos/ltg-dot-blk.svg" alt="LTG Logo" class="w-52 h-52" />
+          <div class="coin-container w-42 h-42" @mouseenter="handleCoinMouseEnter" @mousemove="handleCoinMouseMove">
+            <div class="coin" :style="{ transform: `rotateY(${coinRotation}deg)` }">
+              <div class="coin-side coin-front">
+                <img src="@/assets/logos/ltg-dot-blk.svg" alt="LTG Logo Front" class="coin-svg w-full h-full" />
+              </div>
+              <div class="coin-side coin-back">
+                <img src="@/assets/logos/ltg-dot.svg" alt="LTG Logo Back" class="coin-svg w-full h-full" />
+              </div>
+            </div>
+          </div>
         </div>
         <p class="text-brand-dark/70 max-w-sm mx-auto mb-8 font-medium">
           Construyendo un reino donde cada carta jugada es un lazo de amistad fortalecido.
@@ -151,10 +247,51 @@ function isActive(name: string) {
         </div>
       </div>
     </footer>
+    <LanguageTransition 
+      ref="transitionRef"
+      @change="handleLanguageChange"
+    />
   </div>
 </template>
 
 <style scoped>
-/* Transiciones de entrada si se quieren agregar manualmente, 
-   pero Tailwind animate-in debería funcionar si se configura el plugin */
+.coin-container {
+  perspective: 1000px; 
+}
+
+.coin {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.coin-side {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.coin-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.coin-back {
+  transform: rotateY(180deg);
+}
+
+.coin-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+  transition: filter 1s;
+}
+
+.coin-container:hover .coin-svg {
+  filter: drop-shadow(-10px 5px 20px rgba(0,0,0,0.3));
+}
 </style>

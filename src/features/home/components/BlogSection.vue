@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { BookOpen, Calendar, ChevronRight } from 'lucide-vue-next';
+import { Calendar, ChevronRight } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
+import starIcon from '../../../assets/logos/star.svg';
 import { getContent } from '../../../services/contentService';
+import { formatDate } from '../../../utils/formatters';
 import { useRouter } from 'vue-router';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 import { useLanguage } from '../../../services/languageService';
@@ -33,7 +35,7 @@ function readPost(slug: string) {
 
 <template>
   <div id="blog" class="py-20 container mx-auto px-6 bg-brand-secondary/10 rounded-[3rem] my-12">
-    <SectionTitle :icon="BookOpen">Crónicas del Reino</SectionTitle>
+    <SectionTitle :icon="starIcon">Crónicas del Reino</SectionTitle>
     
     <div v-if="loading" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       <SkeletonLoader v-for="i in 6" :key="i" height="h-64" />
@@ -62,7 +64,7 @@ function readPost(slug: string) {
         <div class="flex items-center justify-between pt-4 border-t border-slate-50">
           <div v-if="post?.date" class="flex items-center gap-2 text-xs text-slate-400">
             <Calendar :size="14" />
-            {{ post.date }}
+            {{ formatDate(post.date) }}
           </div>
           <button 
             v-if="post?.slug"

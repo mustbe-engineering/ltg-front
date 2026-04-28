@@ -17,6 +17,14 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/images': {
+        target: 'http://localhost:1313',
+        changeOrigin: true,
+      },
+      '/admin': {
+        target: 'http://localhost:1313',
+        changeOrigin: true,
+      },
     },
   },
 })

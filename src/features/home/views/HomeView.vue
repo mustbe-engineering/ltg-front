@@ -85,9 +85,6 @@ function scrollToSection(id: string) {
     <EventsSection />
     <NewsletterSection />
     <PodcastSection />
-    <div class="h-52 bg-brand-dark flex items-center justify-center relative z-10 shadow-inner my-16">
-      <img src="@/assets/logos/flames.svg" alt="Flames" class="h-[600px] w-auto object-contain relative top-[20px]" />
-    </div>
     <BlogSection />
     <ManifestoSection />
     <SponsorsSection />

@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Calendar, MapPin, ArrowLeft, ExternalLink } from 'lucide-vue-next';
 import { getContent } from '../../../services/contentService';
+import { formatDate } from '../../../utils/formatters';
 import Button from '../../shared/components/Button.vue';
 
 const route = useRoute();
@@ -33,7 +34,7 @@ onMounted(async () => {
 
       <div class="bg-white rounded-[2rem] shadow-xl overflow-hidden border border-white">
         <!-- Hero / Header inside card -->
-        <div class="bg-gradient-to-r from-pink-500 to-purple-600 p-8 md:p-12 text-white relative overflow-hidden">
+        <div class="bg-brand-dark p-8 md:p-12 text-white relative overflow-hidden">
           <div class="relative z-10">
             <div class="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4 border border-white/30">
               {{ event.type || 'Evento Especial' }}
@@ -42,7 +43,7 @@ onMounted(async () => {
             
             <div class="flex flex-col md:flex-row gap-6 text-pink-100 font-medium">
               <div class="flex items-center gap-2">
-                <Calendar :size="20" /> {{ event.date }}
+                <Calendar :size="20" /> {{ formatDate(event.date) }}
               </div>
               <div class="flex items-center gap-2">
                 <MapPin :size="20" /> {{ event.location }}

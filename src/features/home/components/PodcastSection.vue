@@ -3,6 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { Mic, Rss, Play, Headphones } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
+import { formatDate } from '../../../utils/formatters';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 import { useLanguage } from '../../../services/languageService';
 
@@ -59,7 +60,7 @@ watch(currentLang, loadContent);
           <div class="flex flex-col md:flex-row md:items-center gap-2 mb-2 justify-center md:justify-start">
             <span class="text-xs font-bold text-brand-primary bg-brand-surface px-2 py-1 rounded-md uppercase tracking-wide">Episodio</span>
             <span class="text-xs text-slate-400">
-              <span v-if="episode?.date">{{ episode.date }}</span>
+              <span v-if="episode?.date">{{ formatDate(episode.date) }}</span>
               <span v-if="episode?.date && episode?.duration"> • </span>
               <span v-if="episode?.duration">{{ episode.duration }}</span>
             </span>
