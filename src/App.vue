@@ -163,7 +163,7 @@ function isActive(name: string) {
         
         <!-- Logo -->
         <div class="flex items-center cursor-pointer" @click="navigateTo('home')">
-          <img src="@/assets/logos/ltg-logo.svg" alt="Ladies The Gathering" class="h-11 hidden lg:block" />
+          <img src="@/assets/logos/ltg-blk-logo.svg" alt="Ladies The Gathering" class="h-11 hidden lg:block" />
           <img src="@/assets/logos/ltg-dot.svg" alt="LTG" class="h-11 lg:hidden" />
         </div>
 

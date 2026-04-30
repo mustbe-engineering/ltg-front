@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Sparkles, Calendar, Headphones, Coffee } from 'lucide-vue-next';
+import { Calendar, Headphones, Coffee } from 'lucide-vue-next';
+import starIcon from '@/assets/logos/star-pointing.svg';
 import Button from '../../shared/components/Button.vue';
 import NewsletterSection from '../../shared/components/NewsletterSection.vue';
 import EventsSection from '../components/EventsSection.vue';
@@ -20,21 +21,27 @@ function scrollToSection(id: string) {
 <template>
   <div>
     <!-- Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-surface">
-      <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-        <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-brand-primary/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-secondary/20 rounded-full blur-3xl"></div>
+    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-dark">
+      <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+        <iframe 
+          src="https://www.youtube.com/embed/5H121GfZs7c?autoplay=1&mute=1&controls=0&loop=1&playlist=5H121GfZs7c&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1"
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] min-w-full h-[56.25vw] min-h-full opacity-60"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+        ></iframe>
+        <!-- Gradient Overlay for readability -->
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/80 via-brand-dark/40 to-brand-dark/50"></div>
       </div>
       
       <div class="container mx-auto px-6 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-brand-primary/30 text-brand-primary text-sm font-bold mb-8 shadow-sm animate-fade-in-up">
-          <Sparkles :size="16" /> Bienvenida al Reino de Ladies The Gathering
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-dark/20 border border-brand-primary/30 text-brand-primary text-sm font-bold mb-8 shadow-sm animate-fade-in-up">
+          <img :src="starIcon" class="w-4 h-4" alt="Star icon" /> Bienvenida al Reino de Ladies The Gathering
         </div>
-        <h1 class="text-5xl md:text-7xl font-serif font-bold text-slate-800 mb-6 leading-tight">
+        <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
           Donde la Magia <br/>
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">encuentra su Corte.</span>
         </h1>
-        <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
           Un espacio seguro, inclusivo y encantado para mujeres que aman Magic: The Gathering. Aquí, cada jugadora es una reina y cada mazo cuenta una historia.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">

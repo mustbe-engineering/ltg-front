@@ -28,7 +28,7 @@ watch(currentLang, loadContent);
 
 <template>
   <div id="podcast" class="py-20 container mx-auto px-6">
-    <SectionTitle :icon="Mic">La Voz del Reino</SectionTitle>
+    <SectionTitle :icon="Mic">Ellas tienen voz</SectionTitle>
     <div class="text-center mb-12">
       <p class="text-slate-600 max-w-2xl mx-auto mb-6">
         Escucha las crónicas de nuestras bardas. Entrevistas, consejos de estrategia y chismes de la corte mágica, directo a tus oídos.
