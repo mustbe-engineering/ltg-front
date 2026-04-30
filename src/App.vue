@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { 
-  Menu, X, Crown, Instagram, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
+  Menu, X, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
 } from 'lucide-vue-next';
 import { useLanguage } from './services/languageService';
 import SocialMenu from './features/shared/components/SocialMenu.vue';
@@ -15,6 +15,7 @@ const activeSection = ref('home');
 
 import LanguageTransition from './features/shared/components/LanguageTransition.vue';
 
+const isLanguageTransitioning = ref(false);
 const transitionRef = ref<any>(null);
 
 function triggerLanguageTransition() {
@@ -250,6 +251,7 @@ function isActive(name: string) {
     <LanguageTransition 
       ref="transitionRef"
       @change="handleLanguageChange"
+      @finish="handleLanguageTransitionFinish"
     />
   </div>
 </template>

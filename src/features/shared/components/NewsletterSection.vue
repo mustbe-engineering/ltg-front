@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Send } from 'lucide-vue-next';
 </script>
 
 <template>

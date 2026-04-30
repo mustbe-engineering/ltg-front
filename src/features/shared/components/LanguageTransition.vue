@@ -16,7 +16,7 @@ const duration = 0.9;
 
 let allPoints: number[][] = [];
 let pointsDelay: number[] = [];
-const isOpened = ref(true); // Keep locked to true for stable non-blinking paths
+// Transition state managed via refs and GSAP
 
 const initializePoints = () => {
   allPoints = [];
@@ -35,6 +35,7 @@ const render = () => {
     const path = paths[i];
     if (!path) continue;
     const points = allPoints[i];
+    if (!points) continue;
     
     let d = "";
     d += `M 0 0 V ${points[0]} C`;
@@ -70,7 +71,8 @@ const playTransition = () => {
     
     for (let i = 0; i < 2; i++) {
       for (let j = 0; j < numPoints; j++) {
-        allPoints[i][j] = 100;
+        const points = allPoints[i];
+        if (points) points[j] = 100;
       }
     }
     
@@ -81,15 +83,18 @@ const playTransition = () => {
     // Phase 1: Points go 100 -> 0 (Covers viewport)
     for (let i = 0; i < 2; i++) {
       let points = allPoints[i];
+      if (!points) continue;
       let pathDelay = delayPerPath * i;
       
       for (let j = 0; j < numPoints; j++) {
         let delay = pointsDelay[j];
-        tl.to(points, {
-          [j]: 0,
-          duration: duration,
-          ease: "power2.inOut"
-        }, delay + pathDelay);
+        if (delay !== undefined) {
+          tl.to(points, {
+            [j]: 0,
+            duration: duration,
+            ease: "power2.inOut"
+          }, delay + pathDelay);
+        }
       }
     }
     
@@ -101,15 +106,18 @@ const playTransition = () => {
     // Phase 2: Points go 0 -> 100 (Clears viewport backwards)
     for (let i = 0; i < 2; i++) {
       let points = allPoints[i];
+      if (!points) continue;
       let pathDelay = delayPerPath * (1 - i);
       
       for (let j = 0; j < numPoints; j++) {
         let delay = pointsDelay[j];
-        tl.to(points, {
-          [j]: 100,
-          duration: duration,
-          ease: "power2.inOut"
-        }, 1.5 + delay + pathDelay);
+        if (delay !== undefined) {
+          tl.to(points, {
+            [j]: 100,
+            duration: duration,
+            ease: "power2.inOut"
+          }, 1.5 + delay + pathDelay);
+        }
       }
     }
   });
