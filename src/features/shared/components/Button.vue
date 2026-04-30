@@ -14,8 +14,8 @@ defineEmits<{
     class="px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:-translate-y-1 shadow-md flex items-center justify-center gap-2"
     :class="[
       primary 
-        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:shadow-pink-300/50 hover:shadow-lg border border-transparent' 
-        : 'bg-white text-purple-700 border-2 border-purple-100 hover:border-purple-300 hover:bg-purple-50'
+        ? 'bg-gradient-to-r from-brand-primary to-brand-secondary text-brand-dark hover:shadow-brand-primary/50 hover:shadow-lg border border-transparent' 
+        : 'bg-white text-brand-dark border-2 border-brand-secondary hover:border-brand-primary hover:bg-brand-surface'
     ]"
   >
     <slot />

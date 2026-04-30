@@ -1,5 +1,5 @@
 <template>
-  <div class="animate-pulse bg-pink-100/50 rounded-3xl w-full" :class="height"></div>
+  <div class="animate-pulse bg-brand-secondary/20 rounded-3xl w-full" :class="height"></div>
 </template>
 
 <script setup lang="ts">

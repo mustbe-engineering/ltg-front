@@ -1,15 +1,34 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { 
-  Menu, X, Crown, Instagram, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
+  Menu, X, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
 } from 'lucide-vue-next';
 import { useLanguage } from './services/languageService';
+import SocialMenu from './features/shared/components/SocialMenu.vue';
 
 const router = useRouter();
 const route = useRoute();
 const { currentLang, toggleLanguage } = useLanguage();
 const isMenuOpen = ref(false);
+const activeSection = ref('home');
+
+import LanguageTransition from './features/shared/components/LanguageTransition.vue';
+
+const isLanguageTransitioning = ref(false);
+const transitionRef = ref<any>(null);
+
+function triggerLanguageTransition() {
+  transitionRef.value?.play();
+}
+
+function handleLanguageChange() {
+  toggleLanguage();
+}
+
+function handleLanguageTransitionFinish() {
+  isLanguageTransitioning.value = false;
+}
 
 const navLinks = computed(() => [
   { name: 'home', label: currentLang.value === 'es' ? 'Inicio' : 'Home', icon: Sparkles },
@@ -19,30 +38,134 @@ const navLinks = computed(() => [
   { name: 'manifesto', label: currentLang.value === 'es' ? 'Manifiesto' : 'Manifesto', icon: Scroll },
 ]);
 
+const coinRotation = ref(0);
+let angularVelocity = 0;
+let lastMouseX = 0;
+let lastMouseY = 0;
+let isFirstMove = true;
+let animationFrameId = 0;
+
+const FRICTION = 0.985;
+const SPEED_SCALE = 0.05;
+
+function handleCoinMouseMove(event: MouseEvent) {
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const currentX = event.clientX;
+  const currentY = event.clientY;
+  
+  if (isFirstMove) {
+    lastMouseX = currentX;
+    lastMouseY = currentY;
+    isFirstMove = false;
+    return;
+  }
+
+  const dx = currentX - lastMouseX;
+  const dy = currentY - lastMouseY;
+  const speed = Math.sqrt(dx * dx + dy * dy);
+
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const v1x = lastMouseX - centerX;
+  const v1y = lastMouseY - centerY;
+  const v2x = currentX - centerX;
+  const v2y = currentY - centerY;
+
+  const crossProduct = (v1x * v2y) - (v1y * v2x);
+  const direction = crossProduct >= 0 ? 1 : -1;
+
+  angularVelocity += direction * speed * SPEED_SCALE;
+
+  if (angularVelocity > 50) angularVelocity = 50;
+  if (angularVelocity < -50) angularVelocity = -50;
+
+  lastMouseX = currentX;
+  lastMouseY = currentY;
+}
+
+function handleCoinMouseEnter() {
+  isFirstMove = true;
+}
+
+function updatePhysics() {
+  if (Math.abs(angularVelocity) > 0.5) {
+    coinRotation.value += angularVelocity;
+    angularVelocity *= FRICTION;
+  } else {
+    angularVelocity = 0;
+    const targetAngle = Math.round(coinRotation.value / 180) * 180;
+    const diff = targetAngle - coinRotation.value;
+    
+    if (Math.abs(diff) > 0.1) {
+      coinRotation.value += diff * 0.1;
+    } else {
+      coinRotation.value = targetAngle;
+    }
+  }
+  animationFrameId = requestAnimationFrame(updatePhysics);
+}
+
+onUnmounted(() => {
+  cancelAnimationFrame(animationFrameId);
+});
+
+// ScrollSpy Logic
+onMounted(() => {
+  animationFrameId = requestAnimationFrame(updatePhysics);
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -70% 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        activeSection.value = entry.target.id;
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections
+  navLinks.value.forEach((link) => {
+    const el = document.getElementById(link.name);
+    if (el) observer.observe(el);
+  });
+});
+
 function navigateTo(name: string) {
-  router.push({ name });
   isMenuOpen.value = false;
+  
+  if (route.name === 'home') {
+    const element = document.getElementById(name);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      activeSection.value = name;
+      return;
+    }
+  }
+  
+  router.push({ name: 'home', hash: `#${name}` });
 }
 
 function isActive(name: string) {
-  return route.name === name;
+  if (route.name !== 'home') return false;
+  return activeSection.value === name;
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-pink-200 selection:text-pink-900">
+  <div class="min-h-screen bg-brand-surface font-sans text-brand-dark selection:bg-brand-secondary selection:text-brand-dark">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 left-0 px-4 py-4">
-      <div class="bg-white/80 backdrop-blur-lg rounded-full border border-white/40 shadow-lg shadow-purple-100/50 container mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="bg-white/90 backdrop-blur-lg rounded-full border border-white/40 shadow-lg shadow-brand-secondary/50 container mx-auto px-6 h-16 flex items-center justify-between">
         
         <!-- Logo -->
-        <div class="flex items-center gap-2 cursor-pointer" @click="navigateTo('home')">
-          <div class="w-8 h-8 bg-gradient-to-tr from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white shadow-md">
-            <Crown :size="16" />
-          </div>
-          <span class="font-serif font-bold text-lg tracking-tight text-slate-800 hidden sm:block">
-            Ladies The Gathering
-          </span>
+        <div class="flex items-center cursor-pointer" @click="navigateTo('home')">
+          <img src="@/assets/logos/ltg-blk-logo.svg" alt="Ladies The Gathering" class="h-11 hidden lg:block" />
+          <img src="@/assets/logos/ltg-dot.svg" alt="LTG" class="h-11 lg:hidden" />
         </div>
 
         <!-- Desktop Menu -->
@@ -52,30 +175,28 @@ function isActive(name: string) {
             :key="link.name"
             @click="navigateTo(link.name)"
             class="flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all"
-            :class="isActive(link.name) ? 'bg-pink-100 text-pink-700' : 'text-slate-600 hover:bg-white/50 hover:text-pink-600'"
+            :class="isActive(link.name) ? 'bg-brand-primary/20 text-brand-dark border-brand-primary' : 'text-slate-600 hover:bg-white/50 hover:text-brand-primary'"
           >
             {{ link.label }}
           </button>
           
-          <div class="w-px h-6 bg-slate-200 mx-2"></div>
+          <div class="w-px h-6 bg-brand-secondary/30 mx-2"></div>
 
           <!-- Language Switcher -->
           <button 
-            @click="toggleLanguage"
-            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-all border border-slate-200"
+            @click="triggerLanguageTransition"
+            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest text-brand-dark/60 hover:bg-brand-surface transition-all border border-brand-secondary/30"
           >
             <Languages :size="16" /> {{ currentLang }}
           </button>
           
-          <div class="w-px h-6 bg-slate-200 mx-2"></div>
+          <div class="w-px h-6 bg-brand-secondary/30 mx-2"></div>
           
-          <a href="https://instagram.com/ladiesthegathering" target="_blank" class="flex items-center gap-2 px-5 py-2 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-300">
-            <Instagram :size="16" /> Instagram
-          </a>
+          <SocialMenu />
         </div>
 
         <!-- Mobile Toggle -->
-        <button class="lg:hidden text-slate-600 p-2" @click="isMenuOpen = !isMenuOpen">
+        <button class="lg:hidden text-brand-dark p-2" @click="isMenuOpen = !isMenuOpen">
           <component :is="isMenuOpen ? X : Menu" :size="24" />
         </button>
       </div>
@@ -86,18 +207,16 @@ function isActive(name: string) {
           v-for="link in navLinks" 
           :key="link.name"
           @click="navigateTo(link.name)"
-          class="flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all text-slate-600 hover:bg-pink-50 hover:text-pink-600"
-          :class="{ 'bg-pink-50 text-pink-700': isActive(link.name) }"
+          class="flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all text-slate-600 hover:bg-brand-surface hover:text-brand-primary"
+          :class="{ 'bg-brand-surface text-brand-dark': isActive(link.name) }"
         >
           <component :is="link.icon" :size="18" />
           {{ link.label }}
         </button>
         
-        <hr class="border-slate-100 my-2" />
+        <hr class="border-brand-secondary/20 my-2" />
         
-        <a href="https://instagram.com/ladiesthegathering" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-center flex items-center justify-center gap-2">
-          <Instagram :size="18" /> Instagram
-        </a>
+        <SocialMenu :isMobile="true" />
       </div>
     </nav>
 
@@ -107,24 +226,74 @@ function isActive(name: string) {
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-purple-100 pt-16 pb-8">
+    <footer class="bg-white border-t border-brand-secondary/30 pt-16 pb-8">
       <div class="container mx-auto px-6 text-center">
-        <div class="flex items-center gap-2 justify-center mb-6">
-          <Crown class="text-pink-500" />
-          <span class="font-serif font-bold text-2xl text-slate-800">LTG</span>
+        <div class="flex justify-center mb-6">
+          <div class="coin-container w-42 h-42" @mouseenter="handleCoinMouseEnter" @mousemove="handleCoinMouseMove">
+            <div class="coin" :style="{ transform: `rotateY(${coinRotation}deg)` }">
+              <div class="coin-side coin-front">
+                <img src="@/assets/logos/ltg-dot-blk.svg" alt="LTG Logo Front" class="coin-svg w-full h-full" />
+              </div>
+              <div class="coin-side coin-back">
+                <img src="@/assets/logos/ltg-dot.svg" alt="LTG Logo Back" class="coin-svg w-full h-full" />
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="text-slate-500 max-w-sm mx-auto mb-8">
+        <p class="text-brand-dark/70 max-w-sm mx-auto mb-8 font-medium">
           Construyendo un reino donde cada carta jugada es un lazo de amistad fortalecido.
         </p>
-        <div class="border-t border-slate-100 pt-8 text-slate-400 text-sm">
+        <div class="border-t border-brand-secondary/20 pt-8 text-brand-dark/40 text-sm">
           <p>© {{ new Date().getFullYear() }} Ladies The Gathering. Hecho con polvo de hadas y código.</p>
         </div>
       </div>
     </footer>
+    <LanguageTransition 
+      ref="transitionRef"
+      @change="handleLanguageChange"
+      @finish="handleLanguageTransitionFinish"
+    />
   </div>
 </template>
 
 <style scoped>
-/* Transiciones de entrada si se quieren agregar manualmente, 
-   pero Tailwind animate-in debería funcionar si se configura el plugin */
+.coin-container {
+  perspective: 1000px; 
+}
+
+.coin {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.coin-side {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.coin-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.coin-back {
+  transform: rotateY(180deg);
+}
+
+.coin-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+  transition: filter 1s;
+}
+
+.coin-container:hover .coin-svg {
+  filter: drop-shadow(-10px 5px 20px rgba(0,0,0,0.3));
+}
 </style>

@@ -3,6 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Calendar, User, ArrowLeft, Clock } from 'lucide-vue-next';
 import { getContent } from '../../../services/contentService';
+import { formatDate } from '../../../utils/formatters';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 
 const route = useRoute();
@@ -43,7 +44,7 @@ watch(() => route.params.slug, loadPost);
         </h1>
         <div class="flex items-center justify-center gap-6 text-slate-500 text-sm">
           <div v-if="post?.date" class="flex items-center gap-2">
-            <Calendar :size="16" /> {{ post.date }}
+            <Calendar :size="16" /> {{ formatDate(post.date) }}
           </div>
           <div class="flex items-center gap-2">
             <User :size="16" /> {{ post?.author || 'La Corte' }}
