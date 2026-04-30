@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Calendar, Headphones, Coffee } from 'lucide-vue-next';
 import starIcon from '@/assets/logos/star-pointing.svg';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { gsap } from 'gsap';
 import Button from '../../shared/components/Button.vue';
 import NewsletterSection from '../../shared/components/NewsletterSection.vue';
 import EventsSection from '../components/EventsSection.vue';
@@ -9,6 +11,45 @@ import BlogSection from '../components/BlogSection.vue';
 import ManifestoSection from '../components/ManifestoSection.vue';
 import SponsorsSection from '../components/SponsorsSection.vue';
 import ParallaxSection from '../components/ParallaxSection.vue';
+
+const gradientRef = ref<HTMLElement | null>(null);
+let gradientCtx: gsap.Context | null = null;
+
+onMounted(() => {
+  if (gradientRef.value) {
+    gradientCtx = gsap.context(() => {
+      // Set initial state
+      gsap.set(gradientRef.value, {
+        background: "linear-gradient(135deg, #f0ebfc, #be9ffc, #d6d5ff)"
+      });
+
+      const tl = gsap.timeline({
+        repeat: -1,
+        defaults: {
+          duration: 5,
+          ease: "power1.inOut"
+        }
+      });
+
+      tl.to(gradientRef.value, {
+        background: "linear-gradient(135deg, #be9ffc, #d6d5ff, #11190e)"
+      })
+      .to(gradientRef.value, {
+        background: "linear-gradient(135deg, #d6d5ff, #11190e, #f0ebfc)"
+      })
+      .to(gradientRef.value, {
+        background: "linear-gradient(135deg, #11190e, #f0ebfc, #be9ffc)"
+      })
+      .to(gradientRef.value, {
+        background: "linear-gradient(135deg, #f0ebfc, #be9ffc, #d6d5ff)"
+      });
+    });
+  }
+});
+
+onUnmounted(() => {
+  if (gradientCtx) gradientCtx.revert();
+});
 
 function scrollToSection(id: string) {
   const element = document.getElementById(id);
@@ -91,9 +132,14 @@ function scrollToSection(id: string) {
     <ParallaxSection />
     <EventsSection />
     <NewsletterSection />
-    <PodcastSection />
-    <BlogSection />
-    <ManifestoSection />
-    <SponsorsSection />
+    <div class="relative overflow-hidden">
+      <div ref="gradientRef" class="absolute inset-0 z-0 opacity-50"></div>
+      <div class="relative z-10">
+        <PodcastSection />
+        <BlogSection />
+        <ManifestoSection />
+        <SponsorsSection />
+      </div>
+    </div>
   </div>
 </template>
