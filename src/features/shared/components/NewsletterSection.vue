@@ -26,19 +26,29 @@ async function submitEmail() {
       })
     });
     
+    // If it's not OK, the body might be HTML (404 catch-all), which causes SyntaxError on .json()
+    if (!response.ok) {
+      const errorText = await response.text(); 
+      if (errorText.includes('<!DOCTYPE')) {
+        throw new Error("API Route not found (Received HTML instead of JSON). Check your file path.");
+      }
+      try {
+        const errorData = JSON.parse(errorText);
+        throw new Error(errorData.message || "Error en el servidor");
+      } catch (e) {
+        throw new Error("Error en el servidor (Respuesta no válida)");
+      }
+    }
+
     const data = await response.json();
 
-    if (response.ok) {
-      statusMessage.value = '¡Éxito! Te has suscrito correctamente.';
-      userEmail.value = '';
-    } else {
-      isError.value = true;
-      statusMessage.value = data.message || 'Hubo un error al suscribirse.';
-    }
-  } catch (err) {
+    statusMessage.value = '¡Éxito! Te has suscrito correctamente.';
+    userEmail.value = '';
+    console.log("Success:", data);
+  } catch (err: any) {
     console.error("Submission error", err);
     isError.value = true;
-    statusMessage.value = 'Hubo un error de conexión.';
+    statusMessage.value = err.message || 'Hubo un error de conexión.';
   } finally {
     isSubmitting.value = false;
   }
