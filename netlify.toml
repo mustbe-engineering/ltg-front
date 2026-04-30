@@ -6,6 +6,12 @@
   NODE_VERSION = "20"
   VITE_CMS_API_URL = "https://cms.ladiesthegathering.com"
 
+# Proxy functions to the CMS domain
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "https://cms.ladiesthegathering.com/.netlify/functions/:splat"
+  status = 200
+
 # This rule handles Vue Router client-side routing
 [[redirects]]
   from = "/*"
