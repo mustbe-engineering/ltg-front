@@ -17,7 +17,7 @@ async function submitEmail() {
     // Execute reCAPTCHA to get the token
     const token = await (window as any).grecaptcha.execute('6LdKwNEsAAAAADLfFIY_tGTcslx9pbMKI7pVpq3R', { action: 'submit' });
 
-    const response = await fetch('/.netlify/functions/save-email', {
+    const response = await fetch('https://cms.ladiesthegathering.com/.netlify/functions/save-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
