@@ -114,6 +114,7 @@ function handleCoinTouchStart() {
 function handleCoinTouchMove(event: TouchEvent) {
   if (event.touches.length > 0) {
     const touch = event.touches[0];
+    if (!touch) return;
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const currentX = touch.clientX;
     const currentY = touch.clientY;
