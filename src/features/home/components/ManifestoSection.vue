@@ -37,7 +37,7 @@ watch(currentLang, loadContent);
         <div class="absolute bottom-4 right-4 text-brand-secondary">
           <img src="@/assets/logos/flame.svg" alt="Flame" class="w-20 h-20 object-contain" />
         </div>
-        <h3 v-if="manifesto?.quote" class="text-3xl font-serif text-center text-brand-dark italic mb-8">
+        <h3 v-if="manifesto?.quote" class="text-3xl font-serif text-center text-brand-dark italic mb-8 pt-[36px]">
           {{ manifesto.quote }}
         </h3>
         <div v-if="manifesto?.principles?.length" class="space-y-12 pt-[84px] pb-[24px]">
