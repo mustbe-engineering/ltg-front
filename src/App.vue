@@ -277,6 +277,13 @@ function isActive(name: string) {
           {{ link.label }}
         </button>
         
+        <button 
+          @click="triggerLanguageTransition"
+          class="flex items-center gap-2 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-widest text-brand-dark/60 hover:bg-brand-surface transition-all border border-brand-secondary/30"
+        >
+          <Languages :size="18" /> {{ currentLang }}
+        </button>
+
         <hr class="border-brand-secondary/20 my-2" />
         
         <SocialMenu :isMobile="true" />
