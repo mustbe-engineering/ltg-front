@@ -35,7 +35,7 @@ function openEvent(slug: string) {
 
 <template>
   <div id="events" class="py-20 container mx-auto px-6 bg-brand-secondary/10 rounded-[3rem] my-12">
-    <SectionTitle :icon="Calendar">Calendario Real</SectionTitle>
+    <SectionTitle :icon="Calendar">{{ currentLang === 'es' ? 'Calendario Real' : 'Royal Calendar' }}</SectionTitle>
     
     <div v-if="loading" class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
       <SkeletonLoader v-for="i in 4" :key="i" height="h-64" />
@@ -53,7 +53,7 @@ function openEvent(slug: string) {
         ]"
       >
         <div v-if="event?.highlight" class="absolute top-0 right-0 bg-brand-primary text-brand-dark text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-2xl">
-          ¡IMPERDIBLE!
+          {{ currentLang === 'es' ? '¡IMPERDIBLE!' : 'UNMISSABLE!' }}
         </div>
         
         <div :class="[event?.highlight ? 'md:w-1/3' : 'mb-6', 'flex justify-center']">
@@ -83,13 +83,13 @@ function openEvent(slug: string) {
             :class="!event.highlight ? 'w-full' : ''"
             @click="openEvent(event.slug)"
           >
-            {{ event.highlight ? "Reservar Cupo" : "Más Información" }}
+            {{ event.highlight ? (currentLang === 'es' ? "Reservar Cupo" : "Book Your Spot") : (currentLang === 'es' ? "Más Información" : "More Information") }}
           </Button>
         </div>
       </div>
     </div>
     <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-brand-primary/30 max-w-5xl mx-auto w-full">
-      <p class="text-slate-400 font-serif italic">No hay decretos de eventos por el momento.</p>
+      <p class="text-slate-400 font-serif italic">{{ currentLang === 'es' ? 'No hay decretos de eventos por el momento.' : 'There are no event decrees at the moment.' }}</p>
     </div>
   </div>
 </template>

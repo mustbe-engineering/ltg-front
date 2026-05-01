@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useLanguage } from '../../../services/languageService';
+
+const { currentLang } = useLanguage();
 
 const userEmail = ref('');
 const isSubmitting = ref(false);
@@ -42,13 +45,13 @@ async function submitEmail() {
 
     const data = await response.json();
 
-    statusMessage.value = '¡Éxito! Te has suscrito correctamente.';
+    statusMessage.value = currentLang.value === 'es' ? '¡Éxito! Te has suscrito correctamente.' : 'Success! You have successfully subscribed.';
     userEmail.value = '';
     console.log("Success:", data);
   } catch (err: any) {
     console.error("Submission error", err);
     isError.value = true;
-    statusMessage.value = err.message || 'Hubo un error de conexión.';
+    statusMessage.value = err.message || (currentLang.value === 'es' ? 'Hubo un error de conexión.' : 'There was a connection error.');
   } finally {
     isSubmitting.value = false;
   }
@@ -68,13 +71,13 @@ async function submitEmail() {
           Royal Tea
         </h2>
         <p class="text-brand-secondary mb-8 text-lg">
-          Suscríbete para recibir noticias de torneos, nuevos episodios del podcast y secretos del reino directamente en tu bandeja de entrada (vía cuervo digital).
+          {{ currentLang === 'es' ? 'Suscríbete para recibir noticias de torneos, nuevos episodios del podcast y secretos del reino directamente en tu bandeja de entrada (vía cuervo digital).' : 'Subscribe to receive tournament news, new podcast episodes, and kingdom secrets directly in your inbox (via digital raven).' }}
         </p>
         <form @submit.prevent="submitEmail" class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto bg-white/10 p-2 rounded-full border border-white/20 backdrop-blur-sm">
           <input 
             v-model="userEmail"
             type="email" 
-            placeholder="tu_correo@reino.com" 
+            :placeholder="currentLang === 'es' ? 'tu_correo@reino.com' : 'your_email@kingdom.com'" 
             required
             class="flex-1 bg-transparent border-none text-white placeholder-brand-secondary/50 px-6 py-3 focus:outline-none focus:ring-0 rounded-full" 
           />
@@ -83,7 +86,7 @@ async function submitEmail() {
             :disabled="isSubmitting"
             class="bg-gradient-to-r from-brand-primary to-brand-secondary text-brand-dark px-8 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-brand-primary/30 transition-all transform hover:scale-105 disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed"
           >
-            {{ isSubmitting ? 'Enviando...' : 'Suscribirse' }}
+            {{ isSubmitting ? (currentLang === 'es' ? 'Enviando...' : 'Sending...') : (currentLang === 'es' ? 'Suscribirse' : 'Subscribe') }}
           </button>
         </form>
         
@@ -92,7 +95,7 @@ async function submitEmail() {
         </p>
         
         <p class="text-xs text-brand-secondary/50 mt-4">
-          Prometemos no enviar spam ni hechizos de confusión.
+          {{ currentLang === 'es' ? 'Prometemos no enviar spam ni hechizos de confusión.' : 'We promise not to send spam or confusion spells.' }}
         </p>
       </div>
     </div>

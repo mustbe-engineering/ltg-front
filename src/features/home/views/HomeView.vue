@@ -11,6 +11,9 @@ import BlogSection from '../components/BlogSection.vue';
 import ManifestoSection from '../components/ManifestoSection.vue';
 import SponsorsSection from '../components/SponsorsSection.vue';
 import ParallaxSection from '../components/ParallaxSection.vue';
+import { useLanguage } from '../../../services/languageService';
+
+const { currentLang } = useLanguage();
 
 const gradientRef = ref<HTMLElement | null>(null);
 let gradientCtx: gsap.Context | null = null;
@@ -76,21 +79,21 @@ function scrollToSection(id: string) {
       
       <div class="container mx-auto px-6 relative z-10 text-center">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-dark/20 border border-brand-primary/30 text-brand-primary text-sm font-bold mb-8 shadow-sm animate-fade-in-up">
-          <img :src="starIcon" class="w-4 h-4" alt="Star icon" /> Bienvenida al Reino de Ladies The Gathering
+          <img :src="starIcon" class="w-4 h-4" alt="Star icon" /> {{ currentLang === 'es' ? 'Bienvenida al Reino de Ladies The Gathering' : 'Welcome to the Kingdom of Ladies The Gathering' }}
         </div>
         <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight">
-          Donde la Magia <br/>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">encuentra su Corte.</span>
+          {{ currentLang === 'es' ? 'Donde la Magia' : 'Where Magic' }} <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary">{{ currentLang === 'es' ? 'encuentra su Corte.' : 'finds its Court.' }}</span>
         </h1>
         <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Un espacio seguro, inclusivo y encantado para mujeres que aman Magic: The Gathering. Aquí, cada jugadora es una reina y cada mazo cuenta una historia.
+          {{ currentLang === 'es' ? 'Un espacio seguro, inclusivo y encantado para mujeres que aman Magic: The Gathering. Aquí, cada jugadora es una reina y cada mazo cuenta una historia.' : 'A safe, inclusive, and enchanted space for women who love Magic: The Gathering. Here, every player is a queen and every deck tells a story.' }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <Button primary @click="scrollToSection('events')">
-            <Calendar :size="18" /> Ver Eventos
+            <Calendar :size="18" /> {{ currentLang === 'es' ? 'Ver Eventos' : 'View Events' }}
           </Button>
           <Button @click="scrollToSection('podcast')">
-            <Headphones :size="18" /> Escuchar Podcast
+            <Headphones :size="18" /> {{ currentLang === 'es' ? 'Escuchar Podcast' : 'Listen to Podcast' }}
           </Button>
         </div>
       </div>
@@ -106,22 +109,24 @@ function scrollToSection(id: string) {
           <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
             <div>
               <div class="inline-block bg-brand-primary text-brand-dark text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
-                El Evento Favorito
+                {{ currentLang === 'es' ? 'El Evento Favorito' : 'The Favorite Event' }}
               </div>
               <h2 class="text-4xl md:text-5xl font-serif font-bold text-slate-800 mb-6">
                 Commander Tea Party
               </h2>
               <p class="text-lg text-slate-700 mb-6 leading-relaxed">
-                Olvída la tensión de los torneos oscuros. Te invitamos a nuestra mesa: un lugar lleno de luz, té, postres y risas. El <strong>Commander Tea Party</strong> es nuestra celebración de la amistad y la estrategia, donde ganar es secundario y pasarlo bien es la ley del reino.
+                {{ currentLang === 'es' ? 'Olvída la tensión de los torneos oscuros. Te invitamos a nuestra mesa: un lugar lleno de luz, té, postres y risas. El' : 'Forget the tension of dark tournaments. We invite you to our table: a place full of light, tea, desserts, and laughter. The' }} <strong>Commander Tea Party</strong> {{ currentLang === 'es' ? 'es nuestra celebración de la amistad y la estrategia, donde ganar es secundario y pasarlo bien es la ley del reino.' : 'is our celebration of friendship and strategy, where winning is secondary and having a good time is the law of the kingdom.' }}
               </p>
-              <Button primary @click="scrollToSection('events')">Reservar mi lugar en la mesa</Button>
+              <Button primary @click="scrollToSection('events')">{{ currentLang === 'es' ? 'Reservar mi lugar en la mesa' : 'Book my spot at the table' }}</Button>
             </div>
             <div class="hidden md:flex justify-center">
               <div class="w-80 h-96 bg-white rounded-t-full rounded-b-3xl shadow-[0_20px_50px_rgba(190,159,252,0.3)] border-8 border-white flex flex-col items-center justify-center p-6 text-center">
                 <div class="mb-4 bg-brand-surface rounded-full p-6 text-brand-primary">
                   <Coffee :size="64" />
                 </div>
-                <p class="font-serif italic text-slate-500">"No hay mejor manera de resolver un conflicto en la mesa que con una buena taza de té y un Counterspell a tiempo."</p>
+                <p class="font-serif italic text-slate-500">
+                  {{ currentLang === 'es' ? '"No hay mejor manera de resolver un conflicto en la mesa que con una buena taza de té y un Counterspell a tiempo."' : '"There is no better way to resolve a conflict at the table than with a good cup of tea and a timely Counterspell."' }}
+                </p>
               </div>
             </div>
           </div>

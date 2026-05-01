@@ -29,7 +29,7 @@ watch(currentLang, loadContent);
     </div>
 
     <div class="max-w-4xl mx-auto relative z-10" v-else-if="manifesto">
-      <SectionTitle :icon="Scroll">{{ manifesto?.title || 'El Manifiesto' }}</SectionTitle>
+      <SectionTitle :icon="Scroll">{{ manifesto?.title || (currentLang === 'es' ? 'El Manifiesto' : 'The Manifesto') }}</SectionTitle>
       <div class="bg-white p-8 md:p-12 rounded shadow-2xl border-t-8 border-b-8 border-brand-primary relative">
         <div class="absolute top-4 left-4 text-brand-secondary">
           <img src="@/assets/logos/flame.svg" alt="Flame" class="w-20 h-20 object-contain -scale-y-100 rotate-180" />
@@ -44,7 +44,7 @@ watch(currentLang, loadContent);
           <div v-for="(principle, index) in manifesto.principles" :key="index" class="flex gap-6">
             <div class="text-5xl font-serif text-brand-primary font-bold opacity-50">{{ principle?.number ? principle.number : (Number(index) + 1) }}.</div>
             <div>
-              <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle?.title || 'Principio' }}</h4>
+              <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle?.title || (currentLang === 'es' ? 'Principio' : 'Principle') }}</h4>
               <p class="text-slate-700 leading-relaxed text-lg">
                 {{ principle?.body || '' }}
               </p>
@@ -58,7 +58,7 @@ watch(currentLang, loadContent);
       </div>
     </div>
     <div v-else class="text-center pt-20">
-      <p>Cargando los decretos reales...</p>
+      <p>{{ currentLang === 'es' ? 'Cargando los decretos reales...' : 'Loading royal decrees...' }}</p>
     </div>
   </div>
 </template>

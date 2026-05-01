@@ -34,11 +34,11 @@ function openUrl(url: string) {
 
 <template>
   <div id="amistades" class="py-20 container mx-auto px-6">
-    <SectionTitle :icon="Heart">Amistades del Reino</SectionTitle>
+    <SectionTitle :icon="Heart">{{ currentLang === 'es' ? 'Amistades del Reino' : 'Friends of the Kingdom' }}</SectionTitle>
     
     <div class="text-center mb-12">
       <p class="text-slate-500 max-w-2xl mx-auto italic font-serif">
-        Aliadas, gremios y mercaderes que apoyan nuestra causa.
+        {{ currentLang === 'es' ? 'Aliadas, gremios y mercaderes que apoyan nuestra causa.' : 'Allies, guilds, and merchants who support our cause.' }}
       </p>
     </div>
 
@@ -72,7 +72,7 @@ function openUrl(url: string) {
     </div>
     
     <div v-else class="text-center py-10">
-      <p class="text-brand-secondary text-sm italic">Buscando nuevas alianzas...</p>
+      <p class="text-brand-secondary text-sm italic">{{ currentLang === 'es' ? 'Buscando nuevas alianzas...' : 'Seeking new alliances...' }}</p>
     </div>
   </div>
 </template>

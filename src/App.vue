@@ -44,6 +44,8 @@ let lastMouseX = 0;
 let lastMouseY = 0;
 let isFirstMove = true;
 let animationFrameId = 0;
+let lastTapTime = 0;
+let tapStreak = 0;
 
 const FRICTION = 0.985;
 const SPEED_SCALE = 0.05;
@@ -86,6 +88,66 @@ function handleCoinMouseMove(event: MouseEvent) {
 
 function handleCoinMouseEnter() {
   isFirstMove = true;
+}
+
+function handleCoinTouchStart() {
+  isFirstMove = true;
+  const now = Date.now();
+  
+  // If taps are close together, increase the boost
+  if (now - lastTapTime < 400) {
+    tapStreak = Math.min(tapStreak + 1, 10);
+  } else {
+    tapStreak = 1;
+  }
+  
+  lastTapTime = now;
+  
+  // Add a boost based on streak
+  const boost = 8 + (tapStreak * 3);
+  angularVelocity += boost;
+  
+  // Cap speed
+  if (angularVelocity > 120) angularVelocity = 120;
+}
+
+function handleCoinTouchMove(event: TouchEvent) {
+  if (event.touches.length > 0) {
+    const touch = event.touches[0];
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const currentX = touch.clientX;
+    const currentY = touch.clientY;
+    
+    if (isFirstMove) {
+      lastMouseX = currentX;
+      lastMouseY = currentY;
+      isFirstMove = false;
+      return;
+    }
+
+    const dx = currentX - lastMouseX;
+    const dy = currentY - lastMouseY;
+    const speed = Math.sqrt(dx * dx + dy * dy);
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const v1x = lastMouseX - centerX;
+    const v1y = lastMouseY - centerY;
+    const v2x = currentX - centerX;
+    const v2y = currentY - centerY;
+
+    const crossProduct = (v1x * v2y) - (v1y * v2x);
+    const direction = crossProduct >= 0 ? 1 : -1;
+
+    angularVelocity += direction * speed * SPEED_SCALE;
+
+    if (angularVelocity > 80) angularVelocity = 80;
+    if (angularVelocity < -80) angularVelocity = -80;
+
+    lastMouseX = currentX;
+    lastMouseY = currentY;
+  }
 }
 
 function updatePhysics() {
@@ -229,7 +291,13 @@ function isActive(name: string) {
     <footer class="bg-white border-t border-brand-secondary/30 pt-16 pb-8">
       <div class="container mx-auto px-6 text-center">
         <div class="flex justify-center mb-6">
-          <div class="coin-container w-42 h-42" @mouseenter="handleCoinMouseEnter" @mousemove="handleCoinMouseMove">
+          <div 
+            class="coin-container w-42 h-42 touch-none" 
+            @mouseenter="handleCoinMouseEnter" 
+            @mousemove="handleCoinMouseMove"
+            @touchstart="handleCoinTouchStart"
+            @touchmove.prevent="handleCoinTouchMove"
+          >
             <div class="coin" :style="{ transform: `rotateY(${coinRotation}deg)` }">
               <div class="coin-side coin-front">
                 <img src="@/assets/logos/ltg-dot-blk.svg" alt="LTG Logo Front" class="coin-svg w-full h-full" />

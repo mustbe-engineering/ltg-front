@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { Mic, Rss, Play, Headphones } from 'lucide-vue-next';
+import { Mic, Youtube, Play, Headphones } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import { getContent } from '../../../services/contentService';
 import { formatDate } from '../../../utils/formatters';
+import { formatExternalUrl } from '../../../utils/urlHelper';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 import { useLanguage } from '../../../services/languageService';
 
@@ -24,18 +25,24 @@ async function loadContent() {
 
 onMounted(loadContent);
 watch(currentLang, loadContent);
+
+function openPodcast(url: string) {
+  if (url) {
+    window.open(formatExternalUrl(url), '_blank', 'noopener,noreferrer');
+  }
+}
 </script>
 
 <template>
   <div id="podcast" class="py-20 container mx-auto px-6">
-    <SectionTitle :icon="Mic">Ellas tienen voz</SectionTitle>
+    <SectionTitle :icon="Mic">{{ currentLang === 'es' ? 'Ellas tienen voz' : 'They Have a Voice' }}</SectionTitle>
     <div class="text-center mb-12">
       <p class="text-slate-600 max-w-2xl mx-auto mb-6">
-        Escucha las crónicas de nuestras bardas. Entrevistas, consejos de estrategia y chismes de la corte mágica, directo a tus oídos.
+        {{ currentLang === 'es' ? 'Escucha las crónicas de nuestras aventuras. Entrevistas, consejos de estrategia y chismes de la corte mágica, directo a tus oídos.' : 'Listen to the chronicles of our adventurers. Interviews, strategy tips, and magic court gossip, direct to your ears.' }}
       </p>
       <div class="flex justify-center gap-4">
-        <button class="flex items-center gap-2 px-6 py-2 rounded-full bg-orange-100 text-orange-600 font-bold hover:bg-orange-200 transition-colors">
-          <Rss :size="18" /> Feed RSS
+        <button class="flex items-center gap-2 px-6 py-2 rounded-full bg-red-100 text-red-600 font-bold hover:bg-red-200 transition-colors">
+          <Youtube :size="18" /> YouTube
         </button>
         <button class="flex items-center gap-2 px-6 py-2 rounded-full bg-green-100 text-green-700 font-bold hover:bg-green-200 transition-colors">
           <span class="font-serif">Spotify</span>
@@ -58,7 +65,7 @@ watch(currentLang, loadContent);
         </div>
         <div class="flex-1 text-center md:text-left">
           <div class="flex flex-col md:flex-row md:items-center gap-2 mb-2 justify-center md:justify-start">
-            <span class="text-xs font-bold text-brand-primary bg-brand-surface px-2 py-1 rounded-md uppercase tracking-wide">Episodio</span>
+            <span class="text-xs font-bold text-brand-primary bg-brand-surface px-2 py-1 rounded-md uppercase tracking-wide">{{ currentLang === 'es' ? 'Episodio' : 'Episode' }}</span>
             <span class="text-xs text-slate-400">
               <span v-if="episode?.date">{{ formatDate(episode.date) }}</span>
               <span v-if="episode?.date && episode?.duration"> • </span>
@@ -66,22 +73,25 @@ watch(currentLang, loadContent);
             </span>
           </div>
           <h3 class="text-xl font-bold font-serif text-brand-dark mb-2 group-hover:text-brand-primary transition-colors">
-            {{ episode?.title || 'Episodio Sin Título' }}
+            {{ episode?.title || (currentLang === 'es' ? 'Episodio Sin Título' : 'Untitled Episode') }}
           </h3>
           <p class="text-slate-600 text-sm mb-3">
             {{ episode?.description || '' }}
           </p>
           <div v-if="episode?.guest" class="text-xs font-semibold text-brand-secondary">
-            Invitada especial: {{ episode.guest }}
+            {{ currentLang === 'es' ? 'Invitada especial:' : 'Special guest:' }} {{ episode.guest }}
           </div>
         </div>
-        <button class="w-12 h-12 rounded-full bg-brand-surface flex items-center justify-center text-brand-dark hover:bg-brand-primary hover:text-brand-dark transition-all shadow-sm group-hover:scale-110">
+        <button 
+          @click="openPodcast(episode?.external_url)"
+          class="w-12 h-12 rounded-full bg-brand-surface flex items-center justify-center text-brand-dark hover:bg-brand-primary hover:text-brand-dark transition-all shadow-sm group-hover:scale-110"
+        >
           <Play :size="20" class="ml-1" />
         </button>
       </div>
     </div>
     <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-brand-primary/30 max-w-4xl mx-auto w-full">
-      <p class="text-slate-400 font-serif italic">Las bardas están en silencio por ahora...</p>
+      <p class="text-slate-400 font-serif italic">{{ currentLang === 'es' ? 'Las bardas están en silencio por ahora...' : 'The bards are silent for now...' }}</p>
     </div>
   </div>
 </template>

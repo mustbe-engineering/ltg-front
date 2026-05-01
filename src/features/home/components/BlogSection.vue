@@ -35,7 +35,7 @@ function readPost(slug: string) {
 
 <template>
   <div id="blog" class="py-20 container mx-auto px-6 bg-brand-secondary/10 rounded-[3rem] my-12">
-    <SectionTitle :icon="starIcon">Crónicas del Reino</SectionTitle>
+    <SectionTitle :icon="starIcon">{{ currentLang === 'es' ? 'Crónicas del Reino' : 'Kingdom Chronicles' }}</SectionTitle>
     
     <div v-if="loading" class="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       <SkeletonLoader v-for="i in 6" :key="i" height="h-64" />
@@ -49,12 +49,12 @@ function readPost(slug: string) {
       >
         <div class="mb-4">
           <span class="inline-block px-3 py-1 rounded-full bg-brand-primary/20 text-brand-dark text-xs font-bold uppercase tracking-wide">
-            {{ post?.category || 'Artículo' }}
+            {{ post?.category || (currentLang === 'es' ? 'Artículo' : 'Article') }}
           </span>
         </div>
         
         <h3 class="text-xl font-serif font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors leading-tight">
-          {{ post?.title || 'Sin Título' }}
+          {{ post?.title || (currentLang === 'es' ? 'Sin Título' : 'Untitled') }}
         </h3>
         
         <p class="text-slate-600 text-sm mb-6 flex-1 leading-relaxed line-clamp-3">
@@ -71,13 +71,13 @@ function readPost(slug: string) {
             @click="readPost(post.slug)"
             class="text-brand-primary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all"
           >
-            Leer más <ChevronRight :size="16" />
+            {{ currentLang === 'es' ? 'Leer más' : 'Read more' }} <ChevronRight :size="16" />
           </button>
         </div>
       </article>
     </div>
     <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-brand-primary/30">
-      <p class="text-slate-400 font-serif italic">No se encontraron artículos en la biblioteca real.</p>
+      <p class="text-slate-400 font-serif italic">{{ currentLang === 'es' ? 'No se encontraron artículos en la biblioteca real.' : 'No articles were found in the royal library.' }}</p>
     </div>
   </div>
 </template>
