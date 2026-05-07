@@ -1,6 +1,17 @@
 import { ref, watch } from 'vue';
 
-const currentLang = ref<'es' | 'en'>((localStorage.getItem('ltg_lang') as 'es' | 'en') || 'es');
+const getInitialLanguage = (): 'es' | 'en' => {
+  const saved = localStorage.getItem('ltg_lang') as 'es' | 'en';
+  if (saved) return saved;
+  
+  // Detect browser language
+  const browserLang = typeof navigator !== 'undefined' ? navigator.language.split('-')[0] : 'en';
+  if (browserLang === 'es') return 'es';
+  
+  return 'en'; // Default to English
+};
+
+const currentLang = ref<'es' | 'en'>(getInitialLanguage());
 
 watch(currentLang, (newLang) => {
   localStorage.setItem('ltg_lang', newLang);
