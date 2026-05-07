@@ -222,7 +222,7 @@ function isActive(name: string) {
 <template>
   <div class="min-h-screen bg-brand-surface font-sans text-brand-dark selection:bg-brand-secondary selection:text-brand-dark">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 left-0 px-4 py-4">
+    <nav v-if="route.path !== '/links'" class="fixed w-full z-50 top-0 left-0 px-4 py-4">
       <div class="bg-white/90 backdrop-blur-lg rounded-full border border-white/40 shadow-lg shadow-brand-secondary/50 container mx-auto px-6 h-16 flex items-center justify-between">
         
         <!-- Logo -->
@@ -304,7 +304,7 @@ function isActive(name: string) {
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-brand-secondary/30 pt-16 pb-8">
+    <footer v-if="route.path !== '/links'" class="bg-white border-t border-brand-secondary/30 pt-16 pb-8">
       <div class="container mx-auto px-6 text-center">
         <div class="flex justify-center mb-6">
           <div 
