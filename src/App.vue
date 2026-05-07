@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import { 
-  Menu, X, Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
+  Sparkles, Calendar, Headphones, Scroll, BookOpen, Languages 
 } from 'lucide-vue-next';
 import { useLanguage } from './services/languageService';
 import SocialMenu from './features/shared/components/SocialMenu.vue';
@@ -259,8 +259,16 @@ function isActive(name: string) {
         </div>
 
         <!-- Mobile Toggle -->
-        <button class="lg:hidden text-brand-dark p-2" @click="isMenuOpen = !isMenuOpen">
-          <component :is="isMenuOpen ? X : Menu" :size="24" />
+        <button 
+          class="lg:hidden text-brand-dark p-2 focus:outline-none relative w-10 h-10 flex items-center justify-center" 
+          @click="isMenuOpen = !isMenuOpen"
+          aria-label="Menu"
+        >
+          <div class="nav-icon" :class="{ 'open': isMenuOpen }">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </button>
       </div>
 
@@ -371,5 +379,47 @@ function isActive(name: string) {
 
 .coin-container:hover .coin-svg {
   filter: drop-shadow(-10px 5px 20px rgba(0,0,0,0.3));
+}
+
+/* Animated Hamburger Icon */
+.nav-icon {
+  width: 20px;
+  height: 14px;
+  position: relative;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+
+.nav-icon span:nth-child(1) { top: 0px; }
+.nav-icon span:nth-child(2) { top: 6px; }
+.nav-icon span:nth-child(3) { top: 12px; }
+
+.nav-icon.open span:nth-child(1) {
+  top: 6px;
+  transform: rotate(135deg);
+}
+
+.nav-icon.open span:nth-child(2) {
+  opacity: 0;
+  left: -20px;
+}
+
+.nav-icon.open span:nth-child(3) {
+  top: 6px;
+  transform: rotate(-135deg);
 }
 </style>

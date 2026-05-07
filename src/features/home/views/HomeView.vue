@@ -68,7 +68,7 @@ function scrollToSection(id: string) {
     <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-dark">
       <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <iframe 
-          src="https://www.youtube.com/embed/5H121GfZs7c?autoplay=1&mute=1&controls=0&loop=1&playlist=5H121GfZs7c&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1"
+          src="https://www.youtube.com/embed/5H121GfZs7c?autoplay=1&mute=1&controls=0&loop=1&playlist=5H121GfZs7c&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&playsinline=1"
           class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] min-w-full h-[56.25vw] min-h-full opacity-60"
           frameborder="0"
           allow="autoplay; encrypted-media"

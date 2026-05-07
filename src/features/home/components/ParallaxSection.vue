@@ -4,8 +4,8 @@ import ladiesImage from '@/assets/pictures/ladies.jpg';
 
 <template>
   <section 
-    class="relative h-[400px] md:h-[600px] overflow-hidden flex items-center justify-center"
-    :style="{ backgroundImage: `url(${ladiesImage})`, backgroundAttachment: 'fixed', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }"
+    class="relative h-[400px] md:h-[600px] overflow-hidden flex items-center justify-center bg-center bg-no-repeat bg-cover bg-fixed"
+    :style="{ backgroundImage: `url(${ladiesImage})` }"
   >
     <!-- Overlay for better text readability if needed -->
     <div class="absolute inset-0 bg-brand-dark/40"></div>
@@ -17,12 +17,10 @@ import ladiesImage from '@/assets/pictures/ladies.jpg';
 </template>
 
 <style scoped>
-/* Ensure smooth parallax on mobile if possible, 
-   though background-attachment: fixed has limited support on iOS.
-   For a more robust version, a JS-based parallax could be used. */
-@media (max-width: 768px) {
+/* iOS Safari does not support background-attachment: fixed properly */
+@supports (-webkit-touch-callout: none) {
   section {
-    background-attachment: scroll; /* Fallback for mobile performance */
+    background-attachment: scroll !important;
   }
 }
 </style>

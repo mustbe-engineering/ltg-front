@@ -39,8 +39,11 @@ function toggleMenu() {
     </button>
 
     <div 
-      class="absolute left-0 right-0 lg:left-auto lg:right-0 mt-3 z-50 flex flex-col gap-2"
-      :class="isOpen ? 'pointer-events-auto' : 'pointer-events-none'"
+      class="absolute left-0 right-0 lg:left-auto lg:right-0 z-50 flex gap-2"
+      :class="[
+        isOpen ? 'pointer-events-auto' : 'pointer-events-none',
+        isMobile ? 'flex-col-reverse bottom-full mb-3' : 'flex-col top-full mt-3'
+      ]"
     >
       <a 
         v-for="(net, index) in networks" 
@@ -50,7 +53,7 @@ function toggleMenu() {
         class="flex items-center justify-center lg:justify-start gap-3 px-5 py-3 lg:py-2 rounded-xl lg:rounded-full text-sm font-bold lg:font-semibold shadow-lg hover:scale-105"
         :class="[net.color]"
         :style="{
-          transform: isOpen ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0)',
+          transform: isOpen ? 'translateY(0) scale(1)' : `translateY(${isMobile ? '20px' : '-20px'}) scale(0)`,
           opacity: isOpen ? '1' : '0',
           transition: 'transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 500ms ease',
           transitionDelay: isOpen ? `${index * 80}ms` : `${(networks.length - 1 - index) * 40}ms`
