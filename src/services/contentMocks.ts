@@ -20,13 +20,13 @@ export const MOCKS: Record<string, any> = {
     title: "Eventos",
     posts: [
       { id: "1", title: "Commander Tea Party: Edición Real", date: "2026-10-24T16:00:00Z", location: "La Guarida del Dragón, CDMX", type: "Evento Insignia", description: "Nuestra reunión clásica. Trae tu taza de té favorita.", highlight: true, permalink: "/events/tea-party/" },
-      { id: "2", title: "Taller de Encantamientos", date: "2026-11-05T11:00:00Z", location: "Discord del Reino", type: "Online", description: "Aprende a construir mazos de auras.", highlight: false, permalink: "/events/taller/" }
+      { id: "2", title: "Plains & Drinks", date: "2026-11-20T19:00:00Z", location: "La Taberna Real", type: "Social", description: "Una velada relajada de Magic, cócteles y buenas vibras. ¡Trae tu mazo favorito!", highlight: false, permalink: "/events/plains-drinks/" }
     ]
   },
   podcast: {
     title: "Podcast",
     posts: [
-      { id: "104", title: "Ep. 4: Etiqueta en la Mesa", duration: "45 min", date: "2026-10-10T12:00:00Z", description: "Discutimos los acuerdos tácitos.", guest: "Lady Arwen", permalink: "/podcast/ep4/" }
+      { id: "104", title: "Ep. 4: Etiqueta en la Mesa", duration: "45 min", date: "2026-10-10T12:00:00Z", description: "Discutimos los acuerdos tácitos.", guest: "Lady Arwen", audio_url: "https://www.youtube.com/watch?v=v4RDHbuO9Bs", permalink: "/podcast/ep4/" }
     ]
   },
   blog: {

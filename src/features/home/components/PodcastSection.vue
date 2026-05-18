@@ -25,12 +25,6 @@ async function loadContent() {
 
 onMounted(loadContent);
 watch(currentLang, loadContent);
-
-function openPodcast(url: string) {
-  if (url) {
-    window.open(formatExternalUrl(url), '_blank', 'noopener,noreferrer');
-  }
-}
 </script>
 
 <template>
@@ -82,12 +76,14 @@ function openPodcast(url: string) {
             {{ currentLang === 'es' ? 'Invitada especial:' : 'Special guest:' }} {{ episode.guest }}
           </div>
         </div>
-        <button 
-          @click="openPodcast(episode?.external_url)"
+        <a 
+          :href="formatExternalUrl(episode?.audio_url || episode?.external_url)"
+          target="_blank"
+          rel="noopener noreferrer"
           class="w-12 h-12 rounded-full bg-brand-surface flex items-center justify-center text-brand-dark hover:bg-brand-primary hover:text-brand-dark transition-all shadow-sm group-hover:scale-110"
         >
           <Play :size="20" class="ml-1" />
-        </button>
+        </a>
       </div>
     </div>
     <div v-else class="text-center py-20 bg-white rounded-3xl border border-dashed border-brand-primary/30 max-w-4xl mx-auto w-full">

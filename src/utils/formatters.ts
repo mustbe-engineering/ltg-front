@@ -28,3 +28,13 @@ export function formatDate(dateString: string): string {
     return dateString;
   }
 }
+
+/**
+ * Removes HTML tags from a string.
+ * @param html String containing HTML tags
+ * @returns Clean text string
+ */
+export function stripHtml(html: string): string {
+  if (!html) return '';
+  return html.replace(/<[^>]*>?/gm, '');
+}

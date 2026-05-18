@@ -4,7 +4,7 @@ import { Calendar, ChevronRight } from 'lucide-vue-next';
 import SectionTitle from '../../shared/components/SectionTitle.vue';
 import starIcon from '../../../assets/logos/star.svg';
 import { getContent } from '../../../services/contentService';
-import { formatDate } from '../../../utils/formatters';
+import { formatDate, stripHtml } from '../../../utils/formatters';
 import { useRouter } from 'vue-router';
 import SkeletonLoader from '../../shared/components/SkeletonLoader.vue';
 import { useLanguage } from '../../../services/languageService';
@@ -56,9 +56,8 @@ function readPost(slug: string) {
         <h3 class="text-xl font-serif font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors leading-tight">
           {{ post?.title || (currentLang === 'es' ? 'Sin Título' : 'Untitled') }}
         </h3>
-        
         <p class="text-slate-600 text-sm mb-6 flex-1 leading-relaxed line-clamp-3">
-          {{ post?.excerpt || '' }}
+          {{ stripHtml(post?.excerpt || '') }}
         </p>
         
         <div class="flex items-center justify-between pt-4 border-t border-slate-50">

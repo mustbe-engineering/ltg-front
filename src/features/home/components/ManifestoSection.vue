@@ -30,6 +30,16 @@ watch(currentLang, loadContent);
 
     <div class="max-w-4xl mx-auto relative z-10" v-else-if="manifesto">
       <SectionTitle :icon="Scroll">{{ manifesto?.title || (currentLang === 'es' ? 'El Manifiesto' : 'The Manifesto') }}</SectionTitle>
+      
+      <!-- Manifesto Quote Box -->
+      <div v-if="manifesto?.quote" class="mb-12 text-center max-w-3xl mx-auto relative px-8 py-6 rounded-3xl bg-white/40 backdrop-blur-md border border-white/50 shadow-lg shadow-brand-secondary/5 hover:scale-[1.01] transition-transform duration-300">
+        <span class="absolute top-2 left-4 text-7xl font-serif text-brand-primary/40 select-none">&ldquo;</span>
+        <blockquote class="text-2xl font-serif text-brand-dark/90 italic leading-relaxed px-6">
+          {{ manifesto.quote }}
+        </blockquote>
+        <span class="absolute bottom-[-1.5rem] right-4 text-7xl font-serif text-brand-primary/40 select-none">&rdquo;</span>
+      </div>
+
       <div class="bg-white p-8 md:p-12 rounded shadow-2xl border-t-8 border-b-8 border-brand-primary relative">
         <div class="absolute top-4 left-4 text-brand-secondary">
           <img src="@/assets/logos/flame.svg" alt="Flame" class="w-20 h-20 object-contain -scale-y-100 rotate-180" />
@@ -37,12 +47,12 @@ watch(currentLang, loadContent);
         <div class="absolute bottom-4 right-4 text-brand-secondary">
           <img src="@/assets/logos/flame.svg" alt="Flame" class="w-20 h-20 object-contain" />
         </div>
-        <h3 v-if="manifesto?.quote" class="text-3xl font-serif text-center text-brand-dark italic mb-8 pt-[36px]">
-          {{ manifesto.quote }}
-        </h3>
-        <div v-if="manifesto?.principles?.length" class="space-y-12 pt-[84px] pb-[24px]">
+        
+        <div v-if="manifesto?.principles?.length" class="space-y-12 pt-[94px] pb-[24px]">
           <div v-for="(principle, index) in manifesto.principles" :key="index" class="flex gap-6">
-            <div class="text-5xl font-serif text-brand-primary font-bold opacity-50">{{ principle?.number ? principle.number : (Number(index) + 1) }}.</div>
+            <div class="text-5xl font-serif text-brand-primary font-bold opacity-50 w-20 shrink-0 text-left">
+              {{ principle?.number || (index + 1) }}.
+            </div>
             <div>
               <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle?.title || (currentLang === 'es' ? 'Principio' : 'Principle') }}</h4>
               <p class="text-slate-700 leading-relaxed text-lg">
