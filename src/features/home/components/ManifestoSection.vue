@@ -51,7 +51,7 @@ watch(currentLang, loadContent);
         <div v-if="manifesto?.principles?.length" class="space-y-12 pt-[94px] pb-[24px]">
           <div v-for="(principle, index) in manifesto.principles" :key="index" class="flex gap-6">
             <div class="text-5xl font-serif text-brand-primary font-bold opacity-50 w-20 shrink-0 text-left">
-              {{ principle?.number || (index + 1) }}.
+              {{ principle?.number || (Number(index) + 1) }}.
             </div>
             <div>
               <h4 class="text-xl font-bold text-slate-800 mb-2 uppercase tracking-wide">{{ principle?.title || (currentLang === 'es' ? 'Principio' : 'Principle') }}</h4>
