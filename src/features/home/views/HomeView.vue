@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Calendar, Headphones, Coffee } from 'lucide-vue-next';
 import starIcon from '@/assets/logos/star-pointing.svg';
+import heroVideo from '@/assets/video/hero-banner.mp4';
+import ladiesImage from '@/assets/pictures/ladies.jpg';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { gsap } from 'gsap';
 import Button from '../../shared/components/Button.vue';
@@ -67,12 +69,18 @@ function scrollToSection(id: string) {
     <!-- Hero Section -->
     <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-dark">
       <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <iframe 
-          src="https://www.youtube.com/embed/5H121GfZs7c?autoplay=1&mute=1&controls=0&loop=1&playlist=5H121GfZs7c&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1&playsinline=1"
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.77vh] min-w-full h-[56.25vw] min-h-full opacity-60"
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-        ></iframe>
+        <video 
+          autoplay 
+          loop 
+          muted 
+          playsinline 
+          preload="auto"
+          :poster="ladiesImage"
+          class="absolute top-0 left-0 w-full h-full object-cover opacity-60 pointer-events-none"
+        >
+          <source :src="heroVideo" type="video/mp4" />
+          <img :src="ladiesImage" alt="Hero background fallback" />
+        </video>
         <!-- Gradient Overlay for readability -->
         <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/80 via-brand-dark/40 to-brand-dark/50"></div>
       </div>
